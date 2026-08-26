@@ -1,0 +1,116 @@
+/* ===== shadcn 设计语言 CSS 变量(HSL)+ 双库主题 ===== */
+:root{
+  --b: 0 0% 100%;            /* background */
+  --f: 222.2 47.4% 11.2%;    /* foreground */
+  --card: 0 0% 100%;
+  --cf: 222.2 47.4% 11.2%;
+  --pop: 0 0% 100%;
+  --popf: 222.2 47.4% 11.2%;
+  --primary: 12 76% 51%;     /* Oracle 红 #C74634 */
+  --pf: 0 0% 100%;
+  --sec: 210 40% 96.1%;
+  --secf: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --mf: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --af: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --df: 0 0% 100%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 12 76% 51%;
+  --dm: 199 89% 48%;         /* 达梦蓝 */
+  --oracle: 12 76% 51%;
+  --radius: 0.6rem;
+  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,.05);
+  --shadow: 0 2px 8px rgba(20,30,60,.06);
+  --shadow-md: 0 4px 16px rgba(20,30,60,.08);
+  --shadow-lg: 0 12px 32px rgba(20,30,60,.12);
+}
+.dark{
+  --b: 222.2 84% 4.9%;
+  --f: 210 40% 98%;
+  --card: 222.2 47% 9%;
+  --cf: 210 40% 98%;
+  --pop: 222.2 84% 4.9%;
+  --popf: 210 40% 98%;
+  --primary: 12 80% 56%;
+  --pf: 0 0% 100%;
+  --sec: 217.2 32.6% 17.5%;
+  --secf: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --mf: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --af: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --df: 0 0% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 12 80% 56%;
+  --shadow: 0 2px 8px rgba(0,0,0,.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.45);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:hsl(var(--b));color:hsl(var(--f));
+  line-height:1.65;margin:0;-webkit-font-smoothing:antialiased;
+  transition:background .25s,color .25s;
+}
+.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
+
+/* shadcn 风格基础组件 */
+.card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border-radius:calc(var(--radius) - 2px);font-size:.85rem;font-weight:500;cursor:pointer;transition:.18s;border:1px solid transparent;padding:.5rem .9rem;white-space:nowrap}
+.btn-primary{background:hsl(var(--primary));color:hsl(var(--pf))}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-outline{background:transparent;border-color:hsl(var(--border));color:hsl(var(--f))}
+.btn-outline:hover{background:hsl(var(--accent))}
+.btn-ghost{background:transparent;color:hsl(var(--f))}
+.btn-ghost:hover{background:hsl(var(--accent))}
+.btn-icon{width:36px;height:36px;padding:0;border-radius:50%}
+.badge{display:inline-flex;align-items:center;font-size:.68rem;font-weight:600;padding:.1rem .55rem;border-radius:.6rem;border:1px solid transparent}
+.badge-oracle{background:hsl(12 76% 51% / .12);color:hsl(var(--primary));border-color:hsl(12 76% 51% / .25)}
+.badge-dm{background:hsl(199 89% 48% / .12);color:hsl(var(--dm));border-color:hsl(199 89% 48% / .25)}
+.badge-both{background:hsl(280 50% 50% / .12);color:hsl(280 50% 45%);border-color:hsl(280 50% 50% / .25)}
+.badge-key{background:hsl(var(--accent));color:hsl(var(--af))}
+.input{width:100%;height:38px;border:1px solid hsl(var(--input));border-radius:calc(var(--radius) - 2px);padding:0 .8rem;background:hsl(var(--b));color:hsl(var(--f));font-size:.88rem;outline:none;transition:.18s}
+.input:focus{border-color:hsl(var(--ring));box-shadow:0 0 0 3px hsl(var(--ring) / .15)}
+
+/* 章节锚点滚动偏移 */
+.scroll-anchor{scroll-margin-top:80px}
+
+/* 代码块 */
+pre code.hljs{border-radius:calc(var(--radius) - 4px);font-size:.82rem;line-height:1.55}
+.code-block{position:relative;background:#0d1117;border:1px solid #1c2331;border-radius:calc(var(--radius) - 4px);overflow:hidden}
+.code-block pre{margin:0;padding:.85rem 1rem;overflow-x:auto;font-size:.82rem;font-family:"SFMono-Regular",Consolas,monospace;color:#c9d1d9}
+.code-block .copy{position:absolute;top:.5rem;right:.5rem;background:rgba(255,255,255,.08);color:#c9d1d9;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:.25rem .55rem;font-size:.7rem;cursor:pointer;opacity:0;transition:.18s}
+.code-block:hover .copy{opacity:1}
+.code-block .copy:hover{background:hsl(var(--primary));color:#fff;border-color:hsl(var(--primary))}
+
+/* 翻译输出高亮 */
+.tl-clause{color:hsl(var(--primary));font-weight:700;background:hsl(var(--primary) / .08);padding:0 4px;border-radius:3px}
+.tl-func{color:#92400e;background:#fef3c7;padding:0 4px;border-radius:3px;font-weight:700}
+.dark .tl-func{color:#fbbf24;background:rgba(251,191,36,.12)}
+.tl-note{margin-top:.4rem;padding:.5rem .8rem;background:hsl(var(--muted));border-left:3px solid hsl(var(--primary));border-radius:6px;font-size:.82rem;color:hsl(var(--mf))}
+
+/* 动画 */
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fade-in{animation:fadeIn .3s ease-out}
+@keyframes pulse-soft{0%,100%{opacity:1}50%{opacity:.55}}
+.pulse{animation:pulse-soft 1.6s ease-in-out infinite}
+
+/* 滚动条 */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:hsl(var(--border));border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:hsl(var(--mf) / .5)}
+
+/* CodeMirror 容器 */
+.CodeMirror{height:200px !important;border-radius:calc(var(--radius) - 4px);font-size:.85rem !important}
+.cm-editor{border-radius:calc(var(--radius) - 4px);overflow:hidden}
+.cm-editor .cm-gutters{background:#1e1e2e}
+.cm-editor.cm-focused{outline:2px solid hsl(var(--ring) / .5)}
