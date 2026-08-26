@@ -52,7 +52,8 @@ app.get('*', (req, res, next) => {
   res.status(404).send('Not Found');
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   // eslint-disable-next-line no-console
   console.log(`[Oracle/DM Knowledge] 服务已启动: http://localhost:${PORT}`);
+  console.log(`[Oracle/DM Knowledge] 公网访问: http://115.190.92.241:${PORT}`);
 });
