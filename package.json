@@ -17,6 +17,8 @@
     "better-sqlite3": "^11.3.0",
     "express": "^4.19.2",
     "node-sql-parser": "^5.3.0",
-    "sql-formatter": "^15.4.2"
+    "puppeteer-core": "^25.9.0",
+    "sql-formatter": "^15.4.2",
+    "ws": "^8.21.3"
   }
 }
