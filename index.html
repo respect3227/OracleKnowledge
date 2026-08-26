@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Oracle 数据库完整教程：全部 SQL/PL-SQL 语法、示例与函数库(可搜索)，从入门到精通。">
+<meta http-equiv="Cache-Control" content="public, max-age=3600, stale-while-revalidate=86400">
+<title>Oracle 数据库从 0 到精通 · 语法与函数速查</title>
+
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="preload" href="oracle-data.js" as="script">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+:root{
+      --oracle:#C74634; --oracle-dark:#a33; --blue:#1a73e8;
+      --bg:#f4f6f9; --card:#fff; --border:#e3e8ef;
+      --text:#1a1a2e; --text-2:#555; --text-3:#8a93a3;
+      --code-bg:#2d2d2d; --shadow:0 2px 12px rgba(20,30,60,.06);
+      --shadow-hover:0 8px 28px rgba(20,30,60,.12);
+      --radius:10px;
+      --zoom:1;
+    }
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;margin:0;-webkit-font-smoothing:antialiased;transition:zoom .2s ease}
+body{zoom:1}
+
+/* ===== 顶部导航 ===== */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.topbar-inner{max-width:1320px;margin:0 auto;padding:0 24px;height:62px;display:flex;align-items:center;gap:18px}
+.back-link{color:var(--text-2);text-decoration:none;font-size:.92rem;display:flex;align-items:center;gap:6px;white-space:nowrap;transition:.2s}
+.back-link:hover{color:var(--oracle)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;white-space:nowrap}
+.brand-logo{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--oracle),#e8704f);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;box-shadow:0 2px 8px rgba(199,70,52,.35)}
+.brand small{font-weight:400;color:var(--text-3);font-size:.78rem;display:block;margin-top:-3px}
+.search-global{flex:1;max-width:420px;position:relative}
+.search-global input{width:100%;height:38px;border:1.5px solid var(--border);border-radius:20px;padding:0 16px 0 40px;font-size:.9rem;background:var(--bg);transition:.2s;outline:none}
+.search-global input:focus{border-color:var(--oracle);background:#fff;box-shadow:0 0 0 3px rgba(199,70,52,.1)}
+.search-global i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:.85rem}
+.topbar-actions{display:flex;gap:8px;margin-left:auto}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:none;background:var(--bg);color:var(--text-2);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.icon-btn:hover{background:var(--oracle);color:#fff}
+.zoom-group{display:flex;align-items:center;background:var(--bg);border-radius:20px;padding:2px;gap:1px}
+.zoom-btn{width:30px;height:30px;border-radius:50%;border:none;background:transparent;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;font-size:.85rem}
+.zoom-btn:hover{background:var(--oracle);color:#fff}
+.zoom-label{font-size:.72rem;color:var(--text-3);padding:0 4px;min-width:36px;text-align:center;font-variant-numeric:tabular-nums}
+.zoom-divider{width:1px;height:16px;background:var(--border)}
+@media(max-width:760px){.brand small{display:none}.search-global{display:none}.zoom-label{display:none}}
+
+/* ===== Hero ===== */
+.hero{max-width:1320px;margin:0 auto;padding:42px 24px 26px}
+.hero h1{font-size:clamp(1.8rem,4vw,2.6rem);margin:0 0 10px;background:linear-gradient(120deg,var(--oracle),#e8704f 60%,var(--blue));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2}
+.hero p.lead{color:var(--text-2);font-size:1.02rem;margin:0 0 22px;max-width:760px}
+.stats{display:flex;flex-wrap:wrap;gap:14px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 22px;min-width:130px;box-shadow:var(--shadow);transition:.2s}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.stat .num{font-size:1.6rem;font-weight:800;color:var(--oracle);display:block;line-height:1}
+.stat .lbl{font-size:.82rem;color:var(--text-3);margin-top:4px;display:block}
+.stat i{color:var(--blue);margin-right:4px}
+
+/* ===== 主体布局 ===== */
+.layout{max-width:1320px;margin:0 auto;padding:0 24px 60px;display:grid;grid-template-columns:250px 1fr;gap:28px;align-items:start}
+.sidebar{position:sticky;top:78px;max-height:calc(100vh - 96px);overflow-y:auto;padding-right:6px}
+.sidebar::-webkit-scrollbar{width:6px}
+.sidebar::-webkit-scrollbar-thumb{background:#d0d6e0;border-radius:3px}
+.sidebar h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin:14px 0 8px;padding-left:8px}
+.side-link{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;color:var(--text-2);text-decoration:none;font-size:.88rem;cursor:pointer;transition:.15s;border-left:2px solid transparent}
+.side-link i{width:16px;color:var(--text-3);font-size:.82rem}
+.side-link:hover{background:var(--card);color:var(--oracle)}
+.side-link.active{background:rgba(199,70,52,.08);color:var(--oracle);font-weight:600;border-left-color:var(--oracle)}
+.side-link.active i{color:var(--oracle)}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{position:fixed;left:-280px;top:62px;z-index:90;width:260px;background:#fff;height:calc(100vh - 62px);padding:16px;transition:.25s;box-shadow:2px 0 16px rgba(0,0,0,.1)}.sidebar.open{left:0}}
+
+/* 移动端菜单按钮 */
+.mobile-menu{display:none}
+@media(max-width:900px){.mobile-menu{display:flex}}
+
+/* ===== 章节卡片 ===== */
+.section-block{scroll-margin-top:78px;margin-bottom:46px}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:8px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+.sec-head .ico{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--oracle),#e8704f);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;box-shadow:0 3px 10px rgba(199,70,52,.3)}
+.sec-head h2{font-size:1.35rem;margin:0}
+.sec-head .desc{font-size:.85rem;color:var(--text-3);margin-top:2px}
+
+/* 语法条目卡片 */
+.item-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-top:16px;overflow:hidden;transition:.2s;scroll-margin-top:78px}
+.item-card:hover{box-shadow:var(--shadow-hover);border-color:#d4dae5}
+.item-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 18px 6px;flex-wrap:wrap}
+.item-name{font-size:1.02rem;font-weight:700;margin:0}
+.item-name .anchor{color:var(--text-3);font-weight:400;margin-left:6px;font-size:.78rem}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:.7rem;padding:2px 8px;border-radius:10px;background:#eef2f7;color:var(--text-2);font-weight:500}
+.tag.t-key{background:#fff0ee;color:var(--oracle)}
+.item-desc{padding:0 18px 10px;color:var(--text-2);font-size:.9rem}
+.item-syntax{margin:6px 18px;background:#fff8f6;border-left:3px solid var(--oracle);padding:8px 12px;border-radius:4px;font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.82rem;color:#7a2018;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);font-weight:700;margin:14px 18px 4px;display:flex;align-items:center;gap:6px}
+.label i{font-size:.8rem;color:var(--blue)}
+pre[class*="language-"]{margin:0 18px 10px;border-radius:8px;font-size:.82rem;max-height:340px}
+pre[class*="language-"] code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace !important;line-height:1.55 !important}
+.code-wrap{position:relative;margin:0 18px 10px}
+.code-wrap pre{margin:0}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);color:#eee;border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:4px 9px;font-size:.72rem;cursor:pointer;opacity:0;transition:.2s;backdrop-filter:blur(4px)}
+.code-wrap:hover .copy-btn{opacity:1}
+.copy-btn:hover{background:var(--oracle);border-color:var(--oracle);color:#fff}
+.copy-btn.copied{background:#22c55e;border-color:#22c55e}
+.item-tips{margin:0 18px 14px;padding:9px 12px;background:#f0f6ff;border-radius:6px;font-size:.82rem;color:#3a5a8c;display:flex;gap:8px}
+.item-tips i{color:var(--blue);margin-top:3px}
+.item-result{margin:0 18px 12px;padding:8px 12px;background:#f0fdf4;border-radius:6px;font-size:.82rem;color:#166534;font-family:monospace}
+.item-result::before{content:"结果: ";font-weight:700;color:#15803d}
+
+/* ===== 函数库 ===== */
+.func-section{scroll-margin-top:78px}
+.func-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px;position:sticky;top:70px;background:var(--bg);padding:8px 0;z-index:10}
+.func-search{flex:1;min-width:240px;position:relative}
+.func-search input{width:100%;height:42px;border:1.5px solid var(--border);border-radius:22px;padding:0 18px 0 42px;font-size:.92rem;background:#fff;outline:none;transition:.2s}
+.func-search input:focus{border-color:var(--oracle);box-shadow:0 0 0 3px rgba(199,70,52,.1)}
+.func-search i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-3)}
+.func-search .clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:#eef2f7;border:none;width:24px;height:24px;border-radius:50%;cursor:pointer;color:var(--text-3);display:none}
+.func-search.has-text .clear{display:flex;align-items:center;justify-content:center}
+.func-cats{display:flex;gap:6px;flex-wrap:wrap}
+.cat-btn{padding:7px 14px;border:1.5px solid var(--border);border-radius:18px;background:#fff;color:var(--text-2);font-size:.82rem;cursor:pointer;transition:.15s;font-weight:500}
+.cat-btn:hover{border-color:var(--oracle);color:var(--oracle)}
+.cat-btn.active{background:var(--oracle);border-color:var(--oracle);color:#fff}
+.func-count{font-size:.82rem;color:var(--text-3);padding:0 4px}
+.func-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.func-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;transition:.2s;scroll-margin-top:140px}
+.func-card:hover{box-shadow:var(--shadow-hover);border-color:#d4dae5;transform:translateY(-1px)}
+.func-card .fname{font-weight:700;font-size:.98rem;color:var(--oracle);font-family:"SFMono-Regular",Consolas,monospace}
+.func-card .fsyn{display:block;margin:4px 0 8px;padding:6px 8px;background:#1e1e2e;color:#9eec91;border-radius:5px;font-family:monospace;font-size:.78rem;overflow-x:auto;white-space:nowrap}
+.func-card .fdesc{color:var(--text-2);font-size:.85rem;margin-bottom:8px}
+.func-card .fex{background:#2d2d2d;color:#ddd;border-radius:6px;padding:8px 10px;font-family:monospace;font-size:.76rem;overflow-x:auto;white-space:nowrap;margin-bottom:6px}
+.func-card .fres{font-size:.76rem;color:#15803d;background:#f0fdf4;padding:4px 8px;border-radius:4px;font-family:monospace;display:inline-block}
+.func-card .ftags{margin-top:8px;display:flex;gap:4px;flex-wrap:wrap}
+.func-card .ftag{font-size:.66rem;padding:1px 7px;border-radius:8px;background:#eef2f7;color:var(--text-3)}
+.no-result{grid-column:1/-1;text-align:center;padding:40px;color:var(--text-3)}
+.no-result i{font-size:2rem;display:block;margin-bottom:10px;color:#d0d6e0}
+mark{background:#ffe9a8;color:inherit;border-radius:2px;padding:0 1px}
+
+/* ===== SQL 代码分析器 ===== */
+.analyzer-fab{position:fixed;right:24px;bottom:80px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1a73e8,#4285f4);color:#fff;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(26,115,232,.4);z-index:80;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:.2s}
+.analyzer-fab:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(26,115,232,.5)}
+.analyzer-fab .badge{position:absolute;top:-4px;right:-4px;background:#C74634;color:#fff;font-size:.65rem;padding:2px 6px;border-radius:8px;font-weight:700}
+
+.analyzer-modal{position:fixed;inset:0;background:rgba(20,30,60,.5);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.analyzer-modal.open{display:flex}
+.analyzer-panel{background:#fff;border-radius:14px;width:100%;max-width:720px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.2);overflow:hidden}
+.analyzer-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+.analyzer-head h3{margin:0;font-size:1.05rem;display:flex;align-items:center;gap:10px}
+.analyzer-head h3 i{color:var(--blue)}
+.analyzer-close{background:none;border:none;font-size:1.2rem;color:var(--text-3);cursor:pointer;padding:4px 8px;border-radius:6px}
+.analyzer-close:hover{background:#f0f2f7;color:var(--text)}
+.analyzer-body{padding:20px;overflow-y:auto;flex:1}
+.analyzer-input-wrap{position:relative;margin-bottom:14px}
+.analyzer-input-wrap textarea{width:100%;min-height:140px;border:1.5px solid var(--border);border-radius:10px;padding:14px;font-family:"SFMono-Regular",Consolas,monospace;font-size:.85rem;line-height:1.6;resize:vertical;outline:none;background:#1e1e2e;color:#e0e0e0}
+.analyzer-input-wrap textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,115,232,.15)}
+.analyzer-input-wrap .run-btn{position:absolute;bottom:12px;right:12px;background:var(--blue);color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s}
+.analyzer-input-wrap .run-btn:hover{background:#1557b0}
+.analyzer-input-wrap .run-btn:disabled{opacity:.6;cursor:not-allowed}
+.analyzer-sample{margin-bottom:14px}
+.analyzer-sample summary{cursor:pointer;color:var(--text-3);font-size:.82rem;display:flex;align-items:center;gap:6px;user-select:none}
+.analyzer-sample summary:hover{color:var(--blue)}
+.analyzer-sample .sample-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.analyzer-sample .sample-btn{padding:4px 12px;border:1px solid var(--border);border-radius:14px;background:#f8f9fc;color:var(--text-2);font-size:.78rem;cursor:pointer;transition:.15s}
+.analyzer-sample .sample-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+.analyzer-result{display:none}
+.analyzer-result.show{display:block}
+.ar-section{margin-bottom:18px}
+.ar-section h4{font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin:0 0 10px;display:flex;align-items:center;gap:6px}
+.ar-section h4 i{color:var(--blue)}
+
+.ar-statement{background:linear-gradient(135deg,#f0f6ff,#e8f0fe);border:1px solid #c2d7f5;border-radius:10px;padding:14px 16px}
+.ar-statement .stmt-type{font-size:1.1rem;font-weight:800;color:var(--blue);margin-bottom:4px}
+.ar-statement .stmt-desc{font-size:.85rem;color:var(--text-2);line-height:1.6}
+.ar-statement .stmt-complexity{display:inline-flex;align-items:center;gap:4px;margin-top:8px;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:600}
+.ar-statement .stmt-complexity.low{background:#dcfce7;color:#15803d}
+.ar-statement .stmt-complexity.medium{background:#fef3c7;color:#b45309}
+.ar-statement .stmt-complexity.high{background:#fee2e2;color:#b91c1c}
+
+.ar-tokens{display:flex;flex-wrap:wrap;gap:6px}
+.ar-token{padding:5px 12px;border-radius:6px;font-size:.8rem;font-family:"SFMono-Regular",Consolas,monospace;font-weight:500;cursor:help;transition:.15s;border:1px solid transparent}
+.ar-token:hover{transform:translateY(-1px)}
+.ar-token.tk-keyword{background:#eef2ff;color:#3730a3;border-color:#c7d2fe}
+.ar-token.tk-function{background:#fef3c7;color:#92400e;border-color:#fde68a}
+.ar-token.tk-operator{background:#fdf2f8;color:#9d174d;border-color:#fbcfe8}
+.ar-token.tk-clause{background:#e0f2fe;color:#075985;border-color:#bae6fd}
+.ar-token.tk-join{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+.ar-token.tk-object{background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff}
+.ar-token.tk-literal{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+
+.ar-functions{display:flex;flex-direction:column;gap:8px}
+.ar-func-item{display:flex;align-items:center;justify-content:space-between;background:#fff8f6;border:1px solid #fde8e4;border-radius:8px;padding:8px 12px;font-size:.85rem}
+.ar-func-item .func-name{font-family:"SFMono-Regular",Consolas,monospace;font-weight:700;color:var(--oracle)}
+.ar-func-item .func-cat{font-size:.72rem;color:var(--text-3)}
+.ar-func-item .func-jump{font-size:.75rem;color:var(--blue);cursor:pointer;text-decoration:none;margin-left:auto}
+.ar-func-item .func-jump:hover{text-decoration:underline}
+
+.ar-structure{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.ar-struct-item{background:#f8f9fc;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:.82rem;display:flex;align-items:center;gap:8px}
+.ar-struct-item .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0}
+.ar-struct-item.highlighted{background:#fff8f6;border-color:#fde8e4}
+.ar-struct-item.highlighted .dot{background:var(--oracle)}
+
+.ar-warnings{display:flex;flex-direction:column;gap:8px}
+.ar-warning{display:flex;gap:10px;padding:10px 14px;border-radius:8px;font-size:.82rem;line-height:1.5}
+.ar-warning.warn{background:#fef3c7;color:#92400e;border-left:3px solid #f59e0b}
+.ar-warning.error{background:#fee2e2;color:#991b1b;border-left:3px solid #ef4444}
+.ar-warning.info{background:#dbeafe;color:#1e40af;border-left:3px solid #3b82f6}
+.ar-warning i{flex-shrink:0;margin-top:2px}
+
+.ar-summary{background:linear-gradient(135deg,#f0f6ff,#e8f0fe);border:1px solid #c2d7f5;border-radius:10px;padding:14px 16px;font-size:.85rem;line-height:1.7}
+.ar-summary strong{color:var(--blue)}
+
+.ar-translate{border:1px solid #c2d7f5;border-radius:10px;overflow:hidden;background:#fff}
+.ar-translate-head{background:linear-gradient(135deg,#1a73e8,#4285f4);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:8px;font-weight:600;font-size:.9rem}
+.ar-translate-body{padding:16px;line-height:1.9;font-size:.88rem;color:#333}
+.ar-translate-body .tl-sentence{margin-bottom:12px;padding-left:20px;position:relative}
+.ar-translate-body .tl-sentence::before{content:"";position:absolute;left:4px;top:10px;width:8px;height:8px;border-radius:50%;background:#1a73e8}
+.ar-translate-body .tl-sentence:last-child{margin-bottom:0}
+.ar-translate-body .tl-highlight{background:#fff8f6;padding:1px 5px;border-radius:3px;color:var(--oracle);font-weight:600}
+.ar-translate-body .tl-clause{color:#1a73e8;font-weight:700}
+.ar-translate-body .tl-func{color:#92400e;font-weight:700}
+.ar-translate-body .tl-note{display:block;margin-top:4px;padding:8px 12px;background:#f8f9fc;border-radius:6px;font-size:.8rem;color:#555;border-left:3px solid #1a73e8}
+.ar-translate-toggle{display:inline-flex;align-items:center;gap:4px;margin-left:8px;background:rgba(255,255,255,.2);border:none;color:#fff;font-size:.78rem;cursor:pointer;padding:2px 10px;border-radius:10px}
+.ar-translate-toggle:hover{background:rgba(255,255,255,.3)}
+
+@media(max-width:600px){
+  .analyzer-panel{margin:10px;max-height:92vh;border-radius:12px}
+  .analyzer-body{padding:14px}
+}
+
+/* 回到顶部 */
+.to-top{position:fixed;right:24px;bottom:24px;width:46px;height:46px;border-radius:50%;background:var(--oracle);color:#fff;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(199,70,52,.4);opacity:0;visibility:hidden;transition:.25s;z-index:80;font-size:1rem}
+.to-top.show{opacity:1;visibility:visible}
+.to-top:hover{transform:translateY(-3px)}
+
+/* 页脚 */
+.doc-footer{text-align:center;padding:28px 24px;color:var(--text-3);font-size:.84rem;border-top:1px solid var(--border);background:#fff}
+.doc-footer a{color:var(--oracle);text-decoration:none}
+
+/* 暗色代码块圆角修正 */
+:not(pre)>code[class*="language-"]{background:#1e1e2e;color:#ddd;padding:2px 5px;border-radius:4px;font-size:.85rem}
+
+/* ===== 性能优化 ===== */
+.section-block{content-visibility:auto;contain-intrinsic-size:0 800px}
+.item-card{content-visibility:auto;contain-intrinsic-size:0 300px}
+.func-card{content-visibility:auto;contain-intrinsic-size:0 200px}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.func-grid{contain:layout style paint}
+.func-card{contain:content}
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <button class="icon-btn mobile-menu" id="menuToggle" aria-label="目录"><i class="fas fa-bars"></i></button>
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i>博客</a>
+    <div class="brand">
+      <span class="brand-logo">OR</span>
+      <span>Oracle 全解<small>语法 · 示例 · 函数速查</small></span>
+    </div>
+    <div class="search-global">
+      <i class="fas fa-search"></i>
+      <input id="globalSearch" type="search" placeholder="搜索语法或函数，如 MERGE / NVL / 分区..." autocomplete="off">
+    </div>
+    <div class="topbar-actions">
+      <div class="zoom-group" id="zoomGroup" title="页面缩放">
+        <button class="zoom-btn" id="zoomOut" title="缩小 (Ctrl+-)">
+          <i class="fas fa-minus"></i>
+        </button>
+        <span class="zoom-label" id="zoomLabel">100%</span>
+        <button class="zoom-btn" id="zoomIn" title="放大 (Ctrl++)">
+          <i class="fas fa-plus"></i>
+        </button>
+        <button class="zoom-btn" id="zoomReset" title="重置 (Ctrl+0)">
+          <i class="fas fa-expand"></i>
+        </button>
+      </div>
+      <button class="icon-btn" id="goFunc" title="跳转函数库"><i class="fas fa-function"></i></button>
+      <button class="icon-btn" id="goTop" title="返回顶部"><i class="fas fa-arrow-up"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- SQL 代码分析器入口 -->
+<button class="analyzer-fab" id="analyzerFab" title="分析 SQL 代码">
+  <i class="fas fa-code"></i>
+  <span class="badge">新</span>
+</button>
+
+<!-- SQL 代码分析器面板 -->
+<div class="analyzer-modal" id="analyzerModal">
+  <div class="analyzer-panel">
+    <div class="analyzer-head">
+      <h3><i class="fas fa-code"></i> SQL 代码智能分析器</h3>
+      <button class="analyzer-close" id="analyzerClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="analyzer-body">
+      <div class="analyzer-input-wrap">
+        <textarea id="analyzerInput" placeholder="在此粘贴你的 SQL 代码，例如：&#10;SELECT e.ename, d.dname, COUNT(*)&#10;FROM emp e JOIN dept d ON e.deptno = d.deptno&#10;WHERE e.sal > 1000&#10;GROUP BY e.ename, d.dname&#10;HAVING COUNT(*) > 1&#10;ORDER BY COUNT(*) DESC;" spellcheck="false"></textarea>
+        <button class="run-btn" id="analyzerRun"><i class="fas fa-play"></i> 分析</button>
+      </div>
+      <div class="analyzer-sample">
+        <details>
+          <summary><i class="fas fa-lightbulb"></i> 示例代码（点击加载）</summary>
+          <div class="sample-list">
+            <button class="sample-btn" data-sample="select">SELECT 查询</button>
+            <button class="sample-btn" data-sample="join">多表 JOIN</button>
+            <button class="sample-btn" data-sample="agg">分组聚合</button>
+            <button class="sample-btn" data-sample="sub">子查询</button>
+            <button class="sample-btn" data-sample="analytic">分析函数</button>
+            <button class="sample-btn" data-sample="ddl">DDL 建表</button>
+            <button class="sample-btn" data-sample="merge">MERGE 合并</button>
+            <button class="sample-btn" data-sample="plsql">PL/SQL</button>
+          </div>
+        </details>
+      </div>
+      <div class="analyzer-result" id="analyzerResult"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Hero -->
+<header class="hero">
+  <h1>Oracle 数据库从 0 到精通</h1>
+  <p class="lead">一份覆盖 Oracle 全部 SQL/PL-SQL 语法、配套可运行示例、以及完整可搜索函数库的速查手册。从体系结构、查询、DDL/DML/DCL/TCL 到 PL/SQL 与高级特性，循序渐进。</p>
+  <div class="stats">
+    <div class="stat"><span class="num" id="stSyntax">0</span><span class="lbl"><i class="fas fa-book"></i>语法条目</span></div>
+    <div class="stat"><span class="num" id="stFunc">0</span><span class="lbl"><i class="fas fa-function"></i>内置函数</span></div>
+    <div class="stat"><span class="num" id="stCat">0</span><span class="lbl"><i class="fas fa-folder"></i>知识分类</span></div>
+    <div class="stat"><span class="num" id="stEx">0</span><span class="lbl"><i class="fas fa-code"></i>代码示例</span></div>
+  </div>
+</header>
+
+<!-- 主体 -->
+<div class="layout">
+  <!-- 侧边栏 -->
+  <aside class="sidebar" id="sidebar">
+    <h4>语法章节</h4>
+    <div id="sideSyntax"></div>
+    <h4>函数库</h4>
+    <div id="sideFunc"></div>
+  </aside>
+
+  <!-- 主内容 -->
+  <main id="main"></main>
+</div>
+
+<button class="to-top" id="toTop" aria-label="返回顶部"><i class="fas fa-arrow-up"></i></button>
+
+<footer class="doc-footer">
+  <p>Oracle 数据库从 0 到精通 · 涵盖全部语法、示例与函数库 · 数据字典驱动渲染</p>
+  <p>提示：本页所有 SQL 示例基于经典 <code>SCOTT.EMP / DEPT</code> 示例表，可直接在 SQL*Plus 中练习。</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="oracle-data.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+
+(function(){
+  "use strict";
+  const D = window.ORACLE_DATA || {};
+  const syntaxList = D.syntax || [];
+  const funcList = D.functions || [];
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  const PAGE_SIZE = 24;
+  let currentPage = 0;
+  let filteredFuncs = [];
+  let activeCat = 'all';
+  let kw = '';
+
+  const main = $('#main');
+
+  /* ---------- 统计 ---------- */
+  let synCount=0, exCount=0;
+  syntaxList.forEach(s=>{ synCount+=s.items.length; s.items.forEach(()=>exCount++); });
+  let funcCount=0;
+  funcList.forEach(c=>funcCount+=c.items.length);
+  $('#stSyntax').textContent = synCount;
+  $('#stFunc').textContent = funcCount;
+  $('#stCat').textContent = syntaxList.length + funcList.length;
+  $('#stEx').textContent = exCount + funcCount;
+
+  /* ---------- 渲染语法（分块） ---------- */
+  const syntaxFragments = [];
+  syntaxList.forEach(sec=>{
+    const block = document.createElement('section');
+    block.className = 'section-block';
+    block.id = 'sec-'+sec.id;
+    block.innerHTML = '<div class="sec-head"><div class="ico"><i class="fas '+sec.icon+'"></i></div><div><h2>'+esc(sec.title)+'</h2><div class="desc">'+esc(sec.desc)+'</div></div></div>';
+    sec.items.forEach(it=>{
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.id = 'item-'+slug(it.name);
+      const tags = (it.tags||[]).map((t,i)=>'<span class="tag'+(i===0?' t-key':'')+'">'+esc(t)+'</span>').join('');
+      const tips = it.tips ? '<div class="item-tips"><i class="fas fa-lightbulb"></i><span>'+esc(it.tips)+'</span></div>' : '';
+      const result = it.result ? '<div class="item-result">'+esc(it.result)+'</div>' : '';
+      card.innerHTML = '<div class="item-head"><h3 class="item-name">'+esc(it.name)+'</h3><div class="tags">'+tags+'</div></div><div class="item-desc">'+esc(it.desc)+'</div><div class="item-syntax">'+esc(it.syntax)+'</div><div class="label"><i class="fas fa-play-circle"></i>示例</div><div class="code-wrap"><button class="copy-btn"><i class="fas fa-copy"></i> 复制</button><pre><code class="language-sql">'+esc(it.example)+'</code></pre></div>'+result+tips;
+      block.appendChild(card);
+    });
+    syntaxFragments.push(block);
+  });
+
+  syntaxFragments.forEach(b => main.appendChild(b));
+
+  /* ---------- 渲染函数库 ---------- */
+  const funcBlock = document.createElement('section');
+  funcBlock.className = 'section-block func-section';
+  funcBlock.id = 'sec-functions';
+  funcBlock.innerHTML = '<div class="sec-head"><div class="ico"><i class="fas fa-function"></i></div><div><h2>内置函数速查库</h2><div class="desc">输入函数名/作用/标签即时筛选，支持模糊匹配。共 '+funcCount+' 个函数。</div></div></div><div class="func-toolbar"><div class="func-search" id="funcSearchWrap"><i class="fas fa-search"></i><input id="funcSearch" type="search" placeholder="搜索函数名 / 作用 / 标签，如 NVL、日期、排名..." autocomplete="off"><button class="clear" id="funcClear" aria-label="清除"><i class="fas fa-times"></i></button></div><div class="func-cats" id="funcCats"></div><span class="func-count" id="funcCount"></span></div><div class="func-grid" id="funcGrid"></div><div id="loadMoreSentinel" style="text-align:center;padding:20px;color:#8a93a3;font-size:.85rem"></div>';
+  main.appendChild(funcBlock);
+
+  const catsWrap = $('#funcCats');
+  const allBtn = document.createElement('button');
+  allBtn.className = 'cat-btn active';
+  allBtn.textContent = '全部';
+  allBtn.dataset.cat = 'all';
+  catsWrap.appendChild(allBtn);
+  funcList.forEach(c=>{
+    const b = document.createElement('button');
+    b.className = 'cat-btn';
+    b.textContent = c.category;
+    b.dataset.cat = c.category;
+    catsWrap.appendChild(b);
+  });
+
+  const allFuncs = [];
+  funcList.forEach(c=>c.items.forEach(f=>allFuncs.push(Object.assign({category:c.category, icon:c.icon}, f))));
+  filteredFuncs = allFuncs;
+
+  const grid = $('#funcGrid');
+  const countEl = $('#funcCount');
+  const sentinel = $('#loadMoreSentinel');
+
+  function hl(text, key){
+    if(!key) return esc(text);
+    const idx = String(text).toLowerCase().indexOf(key.toLowerCase());
+    if(idx<0) return esc(text);
+    return esc(text.slice(0,idx))+'<mark>'+esc(text.slice(idx,idx+key.length))+'</mark>'+esc(text.slice(idx+key.length));
+  }
+
+  function renderFuncPage(page){
+    const start = page * PAGE_SIZE;
+    const end = start + PAGE_SIZE;
+    const items = filteredFuncs.slice(start, end);
+    const frag = document.createDocumentFragment();
+    items.forEach(f=>{
+      const card = document.createElement('div');
+      card.className = 'func-card';
+      card.innerHTML = '<div class="fname">'+hl(f.name, kw)+'</div><span class="fsyn">'+esc(f.syntax)+'</span><div class="fdesc">'+hl(f.desc, kw)+'</div><div class="fex">'+esc(f.example)+'</div><span class="fres">↳ '+esc(f.result||'')+'</span><div class="ftags">'+(f.tags||[]).map(t=>'<span class="ftag">'+esc(t)+'</span>').join('')+'</div>';
+      frag.appendChild(card);
+    });
+    grid.appendChild(frag);
+    highlightNewCodes(frag);
+  }
+
+  function renderFunc(reset){
+    if(reset){
+      grid.textContent = '';
+      currentPage = 0;
+    }
+    const k = kw.trim().toLowerCase();
+    filteredFuncs = allFuncs.filter(f=>{
+      const catOk = activeCat==='all' || f.category===activeCat;
+      if(!catOk) return false;
+      if(!k) return true;
+      return f.name.toLowerCase().includes(k) || f.desc.toLowerCase().includes(k) || f.syntax.toLowerCase().includes(k) || (f.tags||[]).some(t=>t.toLowerCase().includes(k));
+    });
+    countEl.textContent = '命中 '+filteredFuncs.length+' / '+allFuncs.length;
+    if(filteredFuncs.length===0){
+      grid.innerHTML = '<div class="no-result"><i class="fas fa-magnifying-glass"></i>未找到匹配的函数，试试其他关键词。</div>';
+      sentinel.textContent = '';
+      return;
+    }
+    if(reset){
+      renderFuncPage(0);
+      const totalPages = Math.ceil(filteredFuncs.length / PAGE_SIZE);
+      sentinel.textContent = totalPages > 1 ? '向下滚动加载更多... ('+PAGE_SIZE+' / 页)' : '';
+    } else {
+      const nextPage = currentPage + 1;
+      renderFuncPage(nextPage);
+      currentPage = nextPage;
+      const remaining = filteredFuncs.length - (currentPage+1)*PAGE_SIZE;
+      sentinel.textContent = remaining > 0 ? '向下滚动加载更多... ('+PAGE_SIZE+' / 页, 剩余 '+remaining+')' : '已加载全部';
+    }
+  }
+
+  renderFunc(true);
+
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting && en.target === sentinel && filteredFuncs.length > (currentPage+1)*PAGE_SIZE){
+        renderFunc(false);
+      }
+    });
+  }, {rootMargin:'200px'});
+  io.observe(sentinel);
+
+  /* ---------- 懒加载代码高亮 ---------- */
+  const codeObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const pre = entry.target;
+        if(!pre.dataset.highlighted){
+          if(window.Prism){ Prism.highlightElement(pre.querySelector('code')); }
+          pre.dataset.highlighted = 'true';
+        }
+        codeObserver.unobserve(pre);
+      }
+    });
+  }, {rootMargin:'300px'});
+
+  function highlightNewCodes(container){
+    const pres = container.querySelectorAll('pre');
+    pres.forEach(pre=>{
+      if(!pre.dataset.highlighted){
+        codeObserver.observe(pre);
+      }
+    });
+  }
+
+  const initialCodes = main.querySelectorAll('pre');
+  initialCodes.forEach(pre=>codeObserver.observe(pre));
+
+  /* ---------- 函数搜索交互 ---------- */
+  const fsInput = $('#funcSearch');
+  const fsWrap = $('#funcSearchWrap');
+  let searchRafId = null;
+  fsInput.addEventListener('input', e=>{
+    kw = e.target.value;
+    fsWrap.classList.toggle('has-text', kw.length>0);
+    if(searchRafId) cancelAnimationFrame(searchRafId);
+    searchRafId = requestAnimationFrame(()=>renderFunc(true));
+  });
+  $('#funcClear').addEventListener('click', ()=>{
+    fsInput.value=''; kw=''; fsWrap.classList.remove('has-text'); renderFunc(true); fsInput.focus();
+  });
+  catsWrap.addEventListener('click', e=>{
+    const b = e.target.closest('.cat-btn');
+    if(!b) return;
+    catsWrap.querySelectorAll('.cat-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    activeCat = b.dataset.cat;
+    renderFunc(true);
+  });
+
+  /* ---------- 侧边栏 ---------- */
+  const sideSyn = $('#sideSyntax');
+  syntaxList.forEach(s=>{
+    const a = document.createElement('a');
+    a.className = 'side-link';
+    a.innerHTML = '<i class="fas '+s.icon+'"></i><span>'+esc(s.title)+'</span>';
+    a.dataset.target = 'sec-'+s.id;
+    sideSyn.appendChild(a);
+  });
+  const sideFunc = $('#sideFunc');
+  funcList.forEach(c=>{
+    const a = document.createElement('a');
+    a.className = 'side-link';
+    a.innerHTML = '<i class="fas '+c.icon+'"></i><span>'+esc(c.category)+'</span>';
+    a.dataset.target = 'sec-functions';
+    sideFunc.appendChild(a);
+  });
+
+  const sideLinks = document.querySelectorAll('.side-link');
+  sideLinks.forEach(a=>{
+    a.addEventListener('click', e=>{
+      e.preventDefault();
+      const t = document.getElementById(a.dataset.target);
+      if(t){ t.scrollIntoView({behavior:'smooth',block:'start'}); }
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+
+  const sections = [...document.querySelectorAll('.section-block')];
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        sideLinks.forEach(l=>l.classList.toggle('active', l.dataset.target===en.target.id));
+      }
+    });
+  }, {rootMargin:'-80px 0px -70% 0px'});
+  sections.forEach(s=>obs.observe(s));
+
+  /* ---------- 复制按钮 ---------- */
+  document.addEventListener('click', e=>{
+    const btn = e.target.closest('.copy-btn');
+    if(!btn) return;
+    const code = btn.parentElement.querySelector('code');
+    const text = code ? code.textContent : '';
+    const done = ()=>{
+      btn.classList.add('copied');
+      btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+      setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML='<i class="fas fa-copy"></i> 复制'; }, 1600);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+    } else { fallbackCopy(text, done); }
+  });
+  function fallbackCopy(text, cb){
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); cb(); }catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ---------- 全局搜索 ---------- */
+  const gs = $('#globalSearch');
+  let gsTimer;
+  gs.addEventListener('input', e=>{
+    clearTimeout(gsTimer);
+    const v = e.target.value.trim();
+    if(!v) return;
+    gsTimer = setTimeout(()=>{
+      const k = v.toLowerCase();
+      const synHit = syntaxList.flatMap(s=>s.items.map(it=>({sec:s,it})))
+        .find(x=>x.it.name.toLowerCase().includes(k) || (x.it.tags||[]).some(t=>t.toLowerCase().includes(k)) || x.it.syntax.toLowerCase().includes(k));
+      if(synHit){
+        const node = document.getElementById('item-'+slug(synHit.it.name));
+        if(node){ node.scrollIntoView({behavior:'smooth',block:'start'}); flash(node); return; }
+      }
+      const fnHit = allFuncs.find(f=>f.name.toLowerCase().includes(k));
+      fsInput.value = v; kw = v; fsWrap.classList.add('has-text');
+      if(fnHit){
+        activeCat = fnHit.category;
+        catsWrap.querySelectorAll('.cat-btn').forEach(x=>x.classList.toggle('active', x.dataset.cat===activeCat));
+      }
+      renderFunc(true);
+      document.getElementById('sec-functions').scrollIntoView({behavior:'smooth',block:'start'});
+    }, 280);
+  });
+
+  function flash(node){
+    node.style.transition='box-shadow .4s';
+    node.style.boxShadow='0 0 0 3px rgba(199,70,52,.5)';
+    setTimeout(()=>{ node.style.boxShadow=''; }, 1400);
+  }
+
+  /* ---------- 工具：slug ---------- */
+  function slug(s){
+    return String(s).toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+
+  /* ---------- 回到顶部 / 移动菜单 ---------- */
+  const toTop = $('#toTop');
+  window.addEventListener('scroll', ()=>{
+    toTop.classList.toggle('show', window.scrollY>500);
+  }, {passive:true});
+  toTop.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
+  $('#goTop').addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
+  $('#goFunc').addEventListener('click', ()=>{
+    document.getElementById('sec-functions').scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(()=>fsInput.focus(), 600);
+  });
+  $('#menuToggle').addEventListener('click', ()=>{
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+
+  /* ---------- 页面缩放 ---------- */
+  const ZOOM_LEVELS = [80, 90, 100, 110, 120, 130, 150];
+  let zoomIdx = 2;
+  const zoomLabel = $('#zoomLabel');
+  const zoomInBtn = $('#zoomIn');
+  const zoomOutBtn = $('#zoomOut');
+  const zoomResetBtn = $('#zoomReset');
+
+  function applyZoom() {
+    const level = ZOOM_LEVELS[zoomIdx];
+    zoomLabel.textContent = level + '%';
+    zoomInBtn.style.opacity = zoomIdx >= ZOOM_LEVELS.length - 1 ? '.4' : '1';
+    zoomOutBtn.style.opacity = zoomIdx <= 0 ? '.4' : '1';
+    zoomResetBtn.style.opacity = zoomIdx === 2 ? '.4' : '1';
+    const ratio = level / 100;
+    const body = document.body;
+    body.style.zoom = ratio;
+    try { localStorage.setItem('oracle_zoom', String(level)); } catch(e) {}
+  }
+
+  zoomInBtn.addEventListener('click', ()=>{
+    if (zoomIdx < ZOOM_LEVELS.length - 1) { zoomIdx++; applyZoom(); }
+  });
+  zoomOutBtn.addEventListener('click', ()=>{
+    if (zoomIdx > 0) { zoomIdx--; applyZoom(); }
+  });
+  zoomResetBtn.addEventListener('click', ()=>{ zoomIdx = 2; applyZoom(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === '=' || e.key === '+') { e.preventDefault(); if (zoomIdx < ZOOM_LEVELS.length-1){zoomIdx++;applyZoom();} }
+      else if (e.key === '-') { e.preventDefault(); if (zoomIdx > 0){zoomIdx--;applyZoom();} }
+      else if (e.key === '0') { e.preventDefault(); zoomIdx = 2; applyZoom(); }
+    }
+  });
+
+  try {
+    const saved = localStorage.getItem('oracle_zoom');
+    if (saved) {
+      const val = parseInt(saved);
+      const idx = ZOOM_LEVELS.indexOf(val);
+      if (idx >= 0) zoomIdx = idx;
+    }
+  } catch(e) {}
+  applyZoom();
+
+  /* ---------- 初始渲染：首屏代码高亮 ---------- */
+  const firstBatch = main.querySelectorAll('pre');
+  firstBatch.forEach(pre=>codeObserver.observe(pre));
+
+  /* ======================================================== */
+  /* ===== SQL 代码智能分析器 ===== */
+  /* ======================================================== */
+
+  const SQL_KEYWORDS = new Set([
+    'SELECT','FROM','WHERE','GROUP','BY','HAVING','ORDER','INSERT','INTO','VALUES',
+    'UPDATE','SET','DELETE','CREATE','TABLE','ALTER','DROP','INDEX','VIEW','SEQUENCE',
+    'SYNONYM','TRIGGER','PROCEDURE','FUNCTION','PACKAGE','BODY','DECLARE','BEGIN','END',
+    'IF','THEN','ELSE','ELSIF','LOOP','WHILE','FOR','RETURN','CURSOR','OPEN','CLOSE',
+    'FETCH','NEXT','IN','OUT','INOUT','IS','AS','AND','OR','NOT','NULL','LIKE','BETWEEN',
+    'EXISTS','INNER','LEFT','RIGHT','FULL','OUTER','CROSS','NATURAL','JOIN','ON','USING',
+    'UNION','ALL','INTERSECT','MINUS','CONNECT','START','WITH','RECURSIVE','MERGE',
+    'MATCHED','NOTHING','WHEN','THEN','ELSE','CASE','ROW','NOWAIT','WITH','READ',
+    'ONLY','CONSTRAINT','PRIMARY','FOREIGN','REFERENCES','UNIQUE','CHECK','DEFAULT',
+    'CASCADE','RESTRICT','NO','ACTION','ADD','MODIFY','COLUMN','RENAME','TO','TRUNCATE',
+    'COMMIT','ROLLBACK','SAVEPOINT','GRANT','REVOKE','DBA','RESOURCE','CONNECT','SESSION',
+    'ALTER','SYSTEM','AUDIT','NOAUDIT','COMPUTE','LABEL','MINUS','SHARE','EXCLUSIVE',
+    'MODE','NONE','CHANGE','TO','VARCHAR2','NUMBER','DATE','CHAR','CLOB','BLOB','RAW',
+    'LONG','TIMESTAMP','INTERVAL','YEAR','MONTH','DAY','HOUR','MINUTE','SECOND',
+    'WITH','TIME','ZONE','LOCAL','AT','OPERATOR','OF','ON','AS','IN','ANY','SOME',
+    'NEW','OLD','WHICH','WHO','WHOM','THIS','THAT','THESE','THOSE'
+  ]);
+
+  const SQL_CLAUSES = new Set([
+    'SELECT','FROM','WHERE','GROUP BY','HAVING','ORDER BY','INSERT INTO','UPDATE',
+    'DELETE FROM','SET','VALUES','ON','USING','WHEN','THEN','ELSE','CASE','MERGE',
+    'PARTITION','RETURNING','FOR','WAIT','NOWAIT','START WITH','CONNECT BY','PRIOR',
+    'WITH','RECURSIVE','UNION','UNION ALL','INTERSECT','MINUS'
+  ]);
+
+  const SQL_JOINS = new Set([
+    'INNER JOIN','LEFT JOIN','RIGHT JOIN','FULL JOIN','FULL OUTER JOIN',
+    'CROSS JOIN','NATURAL JOIN','LEFT OUTER JOIN','RIGHT OUTER JOIN'
+  ]);
+
+  const SQL_OPERATORS = new Set([
+    '=','<>','!=','<','>','<=','>=','+','-','*','/','%',
+    'AND','OR','NOT','IS','IN','LIKE','BETWEEN','EXISTS','ANY','SOME','ALL',
+    '||','::','.'
+  ]);
+
+  const SQL_OBJECTS = new Set([
+    'TABLE','VIEW','INDEX','SEQUENCE','SYNONYM','PROCEDURE','FUNCTION',
+    'PACKAGE','TRIGGER','TYPE','LIBRARY','DIRECTORY','CONTEXT'
+  ]);
+
+  const SQL_LITERALS = new Set([
+    'SYSDATE','USER','SYSTEM','ROWNUM','LEVEL','NEXTVAL','CURRVAL',
+    'TRUE','FALSE','UNKNOWN'
+  ]);
+
+  const SAMPLES = {
+    select: `SELECT e.ename, e.sal, d.dname
+FROM emp e, dept d
+WHERE e.deptno = d.deptno
+  AND e.sal > 1500
+ORDER BY e.sal DESC`,
+    join: `SELECT e.ename, d.dname, s.grade
+FROM emp e
+INNER JOIN dept d ON e.deptno = d.deptno
+LEFT JOIN salgrade s ON e.sal BETWEEN s.losal AND s.hisal
+WHERE d.loc LIKE '%NEW%'`,
+    agg: `SELECT d.dname, COUNT(*) AS emp_cnt,
+       AVG(e.sal) AS avg_sal,
+       MAX(e.sal) AS max_sal
+FROM dept d
+JOIN emp e ON d.deptno = e.deptno
+GROUP BY d.dname, d.loc
+HAVING AVG(e.sal) > 2000
+ORDER BY avg_sal DESC`,
+    sub: `SELECT ename, sal
+FROM emp
+WHERE sal > (SELECT AVG(sal) FROM emp WHERE deptno = 30)
+  AND deptno IN (SELECT deptno FROM dept WHERE loc = 'DALLAS')`,
+    analytic: `SELECT ename, deptno, sal,
+  RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) AS rank_in_dept,
+  SUM(sal) OVER (PARTITION BY deptno) AS dept_total,
+  ROUND(AVG(sal) OVER (), 2) AS overall_avg
+FROM emp
+ORDER BY deptno, sal DESC`,
+    ddl: `CREATE TABLE employees (
+  emp_id    NUMBER(6)   PRIMARY KEY,
+  emp_name  VARCHAR2(50) NOT NULL,
+  email     VARCHAR2(100) UNIQUE,
+  hire_date DATE        DEFAULT SYSDATE,
+  salary    NUMBER(8,2)  DEFAULT 0,
+  dept_id   NUMBER(4)    REFERENCES departments(dept_id),
+  status    VARCHAR2(20) DEFAULT 'ACTIVE'
+);
+CREATE INDEX idx_emp_name ON employees(emp_name);`,
+    merge: `MERGE INTO target t
+USING source s
+ON (t.id = s.id)
+WHEN MATCHED THEN
+  UPDATE SET t.name = s.name, t.updated = SYSDATE
+WHEN NOT MATCHED THEN
+  INSERT (id, name, created)
+  VALUES (s.id, s.name, SYSDATE);`,
+    plsql: `DECLARE
+  v_count NUMBER;
+  v_name  VARCHAR2(50);
+BEGIN
+  SELECT COUNT(*) INTO v_count FROM emp WHERE deptno = 10;
+  DBMS_OUTPUT.PUT_LINE('Department 10 has ' || v_count || ' employees');
+
+  FOR r IN (SELECT ename, sal FROM emp WHERE sal > 3000) LOOP
+    DBMS_OUTPUT.PUT_LINE(r.ename || ' earns ' || r.sal);
+  END LOOP;
+END;`
+  };
+
+  function tokenizeSQL(sql) {
+    const tokens = [];
+    const upper = sql.toUpperCase();
+    const len = sql.length;
+    let i = 0;
+
+    while (i < len) {
+      const ch = sql[i];
+
+      if (/\s/.test(ch)) { i++; continue; }
+
+      if (ch === '-' && sql[i+1] === '-') {
+        while (i < len && sql[i] !== '\n') i++;
+        continue;
+      }
+
+      if (ch === '/' && sql[i+1] === '*') {
+        i += 2;
+        while (i < len && !(sql[i] === '*' && sql[i+1] === '/')) i++;
+        i += 2;
+        continue;
+      }
+
+      if (ch === "'") {
+        let j = i + 1;
+        while (j < len && sql[j] !== "'") {
+          if (sql[j] === '\'') j++;
+          j++;
+        }
+        const val = sql.slice(i, j+1);
+        tokens.push({text: val, type: 'literal', raw: sql.slice(i, j+1)});
+        i = j + 1;
+        continue;
+      }
+
+      if (ch === '"') {
+        let j = i + 1;
+        while (j < len && sql[j] !== '"') j++;
+        const val = sql.slice(i, j+1);
+        tokens.push({text: val, type: 'identifier', raw: sql.slice(i, j+1)});
+        i = j + 1;
+        continue;
+      }
+
+      if (/\d/.test(ch)) {
+        let j = i;
+        while (j < len && /[\d.]/.test(sql[j])) j++;
+        const val = sql.slice(i, j);
+        tokens.push({text: val, type: 'number', raw: val});
+        i = j;
+        continue;
+      }
+
+      if (/[a-zA-Z_]/.test(ch)) {
+        let j = i;
+        while (j < len && /[a-zA-Z0-9_]/.test(sql[j])) j++;
+        const word = sql.slice(i, j);
+        const wordUpper = word.toUpperCase();
+
+        if (SQL_KEYWORDS.has(wordUpper)) {
+          tokens.push({text: wordUpper, type: 'keyword', raw: word});
+        } else if (SQL_OBJECTS.has(wordUpper)) {
+          tokens.push({text: wordUpper, type: 'object', raw: word});
+        } else if (SQL_LITERALS.has(wordUpper)) {
+          tokens.push({text: wordUpper, type: 'literal', raw: word});
+        } else {
+          tokens.push({text: word, type: 'identifier', raw: word});
+        }
+        i = j;
+        continue;
+      }
+
+      if (/[(),;.]/.test(ch)) {
+        tokens.push({text: ch, type: 'punctuation', raw: ch});
+        i++;
+        continue;
+      }
+
+      if (/[<>=!+\-*/%|]/.test(ch)) {
+        let j = i;
+        while (j < len && /[<>=!+\-*/%|]/.test(sql[j])) j++;
+        const op = sql.slice(i, j);
+        const opUpper = op.toUpperCase();
+        if (SQL_OPERATORS.has(opUpper) || SQL_OPERATORS.has(op)) {
+          tokens.push({text: op, type: 'operator', raw: op});
+        } else {
+          tokens.push({text: op, type: 'operator', raw: op});
+        }
+        i = j;
+        continue;
+      }
+
+      tokens.push({text: ch, type: 'unknown', raw: ch});
+      i++;
+    }
+
+    return tokens;
+  }
+
+  function analyzeSQL(sql) {
+    if (!sql || !sql.trim()) return null;
+
+    const tokens = tokenizeSQL(sql);
+    const upper = sql.toUpperCase();
+    const result = {
+      sql: sql,
+      statementType: 'UNKNOWN',
+      statementDesc: '',
+      complexity: 'low',
+      complexityScore: 0,
+      tokens: tokens,
+      functions: [],
+      constructs: {
+        hasJoin: false, joinType: '',
+        hasSubquery: false, subqueryCount: 0,
+        hasGroupBy: false, hasHaving: false,
+        hasOrderBy: false,
+        hasUnion: false,
+        hasCase: false,
+        hasWindowFunc: false,
+        hasWithClause: false,
+        hasMerge: false,
+        hasPLSQL: false,
+        hasCTE: false,
+        hasWindowSpec: false
+      },
+      tables: [],
+      warnings: [],
+      keywords: []
+    };
+
+    const firstKW = tokens.find(t => t.type === 'keyword');
+    if (firstKW) {
+      const kw = firstKW.text;
+      const STMT_MAP = {
+        'SELECT':  {type: 'SELECT', desc: '查询语句，从一个或多个表中检索数据', complexity: 'low'},
+        'INSERT':  {type: 'INSERT', desc: '插入语句，向表中添加新行', complexity: 'low'},
+        'UPDATE':  {type: 'UPDATE', desc: '更新语句，修改表中已有行的数据', complexity: 'low'},
+        'DELETE':  {type: 'DELETE', desc: '删除语句，从表中删除行', complexity: 'low'},
+        'MERGE':   {type: 'MERGE', desc: '合并语句，根据条件进行 INSERT/UPDATE/DELETE', complexity: 'medium'},
+        'CREATE':  {type: 'CREATE', desc: 'DDL 语句，创建数据库对象', complexity: 'low'},
+        'ALTER':   {type: 'ALTER', desc: 'DDL 语句，修改数据库对象结构', complexity: 'low'},
+        'DROP':    {type: 'DROP', desc: 'DDL 语句，删除数据库对象', complexity: 'low'},
+        'TRUNCATE':{type: 'TRUNCATE', desc: 'DDL 语句，快速清空表数据', complexity: 'low'},
+        'DECLARE': {type: 'PL/SQL', desc: 'PL/SQL 块，声明变量和游标', complexity: 'high'},
+        'BEGIN':   {type: 'PL/SQL', desc: 'PL/SQL 块，过程化逻辑处理', complexity: 'high'},
+        'WITH':    {type: 'SELECT (CTE)', desc: '公用表表达式(CTE)，递归查询或模块化查询', complexity: 'medium'},
+        'GRANT':   {type: 'GRANT', desc: 'DCL 语句，授予权限', complexity: 'low'},
+        'REVOKE':  {type: 'REVOKE', desc: 'DCL 语句，撤销权限', complexity: 'low'},
+        'COMMIT':  {type: 'COMMIT', desc: 'TCL 语句，提交事务', complexity: 'low'},
+        'ROLLBACK':{type: 'ROLLBACK', desc: 'TCL 语句，回滚事务', complexity: 'low'}
+      };
+      const mapped = STMT_MAP[kw];
+      if (mapped) {
+        result.statementType = mapped.type;
+        result.statementDesc = mapped.desc;
+        result.complexity = mapped.complexity;
+      } else {
+        result.statementDesc = `以 ${kw} 开头的 SQL 语句`;
+      }
+    }
+
+    const FUNC_PATTERN = /\b([A-Z][A-Z0-9_]{2,})\s*\(/g;
+    const foundFuncs = new Set();
+    let fm;
+    while ((fm = FUNC_PATTERN.exec(upper)) !== null) {
+      const fname = fm[1];
+      if (!SQL_KEYWORDS.has(fname) && !SQL_OBJECTS.has(fname)) {
+        foundFuncs.add(fname);
+      }
+    }
+
+    funcList.forEach(c => {
+      c.items.forEach(f => {
+        if (foundFuncs.has(f.name.toUpperCase())) {
+          result.functions.push({
+            name: f.name,
+            category: c.category,
+            desc: f.desc,
+            syntax: f.syntax
+          });
+        }
+      });
+    });
+
+    foundFuncs.forEach(fname => {
+      const known = result.functions.some(f => f.name.toUpperCase() === fname);
+      if (!known) {
+        const cat = fname.endsWith('_DATE') || fname.includes('DATE') ? '日期函数 Date'
+          : fname.includes('NUM') || fname.includes('ROUND') || fname.includes('TRUNC') ? '数值函数 Numeric'
+          : fname.includes('TO_') ? '转换函数 Conversion'
+          : fname === 'NVL' || fname === 'COALESCE' ? 'NULL 处理函数 Null'
+          : '其他/环境函数 Misc';
+        result.functions.push({
+          name: fname,
+          category: cat,
+          desc: '内置函数',
+          syntax: fname + '()'
+        });
+      }
+    });
+
+    if (/INNER\s+JOIN|LEFT\s+(OUTER\s+)?JOIN|RIGHT\s+(OUTER\s+)?JOIN|FULL\s+(OUTER\s+)?JOIN|CROSS\s+JOIN|NATURAL\s+JOIN/i.test(upper)) {
+      result.constructs.hasJoin = true;
+      if (/INNER\s+JOIN/i.test(upper)) result.constructs.joinType = 'INNER JOIN';
+      else if (/LEFT\s+(OUTER\s+)?JOIN/i.test(upper)) result.constructs.joinType = 'LEFT JOIN';
+      else if (/RIGHT\s+(OUTER\s+)?JOIN/i.test(upper)) result.constructs.joinType = 'RIGHT JOIN';
+      else if (/FULL\s+(OUTER\s+)?JOIN/i.test(upper)) result.constructs.joinType = 'FULL OUTER JOIN';
+      else if (/CROSS\s+JOIN/i.test(upper)) result.constructs.joinType = 'CROSS JOIN';
+      else if (/NATURAL\s+JOIN/i.test(upper)) result.constructs.joinType = 'NATURAL JOIN';
+      result.complexityScore += 10;
+    } else if (/,/g.test(sql) && /FROM\s+\w+\s*,\s*\w+/i.test(upper)) {
+      result.constructs.hasJoin = true;
+      result.constructs.joinType = '隐式连接（逗号连接）';
+      result.warnings.push({type: 'warn', msg: '使用了隐式连接（逗号），建议改为显式 JOIN 语法以提高可读性'});
+      result.complexityScore += 5;
+    }
+
+    const subqueryMatches = upper.match(/\(\s*SELECT\s/g);
+    if (subqueryMatches) {
+      result.constructs.hasSubquery = true;
+      result.constructs.subqueryCount = subqueryMatches.length;
+      result.complexityScore += subqueryMatches.length * 8;
+      if (subqueryMatches.length > 2) {
+        result.warnings.push({type: 'warn', msg: '子查询较多（'+subqueryMatches.length+'个），考虑改用 JOIN 或 CTE 优化可读性'});
+      }
+    }
+
+    if (/GROUP\s+BY/i.test(upper)) {
+      result.constructs.hasGroupBy = true;
+      result.complexityScore += 5;
+    }
+    if (/HAVING/i.test(upper)) {
+      result.constructs.hasHaving = true;
+      result.complexityScore += 5;
+    }
+    if (/ORDER\s+BY/i.test(upper)) {
+      result.constructs.hasOrderBy = true;
+    }
+    if (/UNION(\s+ALL)?/i.test(upper)) {
+      result.constructs.hasUnion = true;
+      result.complexityScore += 8;
+    }
+    if (/CASE\s+WHEN/i.test(upper)) {
+      result.constructs.hasCase = true;
+      result.complexityScore += 5;
+    }
+    if (/OVER\s*\(/i.test(upper)) {
+      result.constructs.hasWindowFunc = true;
+      result.constructs.hasWindowSpec = true;
+      result.complexityScore += 12;
+      const overCount = (upper.match(/OVER\s*\(/g) || []).length;
+      if (overCount > 3) {
+        result.warnings.push({type: 'warn', msg: '窗口函数较多（'+overCount+'个），注意性能影响'});
+      }
+    }
+    if (/WITH\s+\w+\s+AS\s*\(/i.test(upper)) {
+      result.constructs.hasWithClause = true;
+      result.constructs.hasCTE = true;
+      result.complexityScore += 8;
+    }
+    if (/MERGE\s+INTO/i.test(upper)) {
+      result.constructs.hasMerge = true;
+      result.complexityScore += 10;
+    }
+    if (/DECLARE|BEGIN|END|LOOP|WHILE|FOR\s+\w+\s+IN/i.test(upper)) {
+      result.constructs.hasPLSQL = true;
+      result.complexityScore += 15;
+    }
+
+    const FROM_match = upper.match(/FROM\s+([A-Z0-9_,\s]+?)(?:WHERE|GROUP|ORDER|HAVING|CONNECT|START|UNION|INTERSECT|MINUS|MERGE|WHEN|RETURNING|$)/i);
+    if (FROM_match) {
+      const tableStr = FROM_match[1].trim();
+      result.tables = tableStr.split(/[,\s]+/).filter(t => t && !SQL_KEYWORDS.has(t.toUpperCase()));
+    }
+    const INTO_match = upper.match(/INTO\s+([A-Z0-9_,\s]+?)(?:\(|VALUES|SELECT|$)/i);
+    if (INTO_match) {
+      const tableStr = INTO_match[1].trim();
+      const tbls = tableStr.split(/[,\s]+/).filter(t => t && !SQL_KEYWORDS.has(t.toUpperCase()));
+      result.tables = result.tables.concat(tbls);
+    }
+    const UPDATE_match = upper.match(/UPDATE\s+([A-Z0-9_]+)/i);
+    if (UPDATE_match) {
+      result.tables.push(UPDATE_match[1]);
+    }
+    const DELETE_match = upper.match(/DELETE\s+FROM\s+([A-Z0-9_]+)/i);
+    if (DELETE_match) {
+      result.tables.push(DELETE_match[1]);
+    }
+    result.tables = [...new Set(result.tables.map(t => t.toUpperCase()))];
+
+    if (/SELECT\s+\*/i.test(upper) && !/COUNT\s*\(\s*\*\s*\)/i.test(upper)) {
+      result.warnings.push({type: 'info', msg: '使用了 SELECT *，生产环境中建议明确指定列名以避免不必要的数据传输'});
+    }
+    if (/WHERE\s+1\s*=\s*1/i.test(upper)) {
+      result.warnings.push({type: 'info', msg: 'WHERE 1=1 是常见的动态 SQL 拼接技巧，注意 SQL 注入风险'});
+    }
+    if (/NOT\s+IN\s*\(\s*SELECT/i.test(upper)) {
+      result.warnings.push({type: 'warn', msg: 'NOT IN 子查询在子查询返回 NULL 时结果可能不符合预期，建议改用 NOT EXISTS'});
+    }
+    if (/LIKE\s+['%_]/i.test(upper) && /['%_].*['%_]/.test(sql)) {
+      result.warnings.push({type: 'warn', msg: '双通配符模糊查询（如 %xxx%）无法使用索引，大数据量下性能较差'});
+    }
+    if (/OR\s+\w+\s*=\s*\w+\s+OR\s+\w+/.test(upper)) {
+      result.warnings.push({type: 'warn', msg: '多个 OR 条件可能导致索引失效，考虑改写为 IN 或 UNION'});
+    }
+    if (/ROUND\s*\(\s*SYSDATE|TRUNC\s*\(\s*SYSDATE|TO_CHAR\s*\(\s*SYSDATE/i.test(upper)) {
+      result.warnings.push({type: 'info', msg: '对 SYSDATE 使用函数可能导致索引失效，考虑使用范围条件'});
+    }
+
+    if (result.complexityScore >= 30) result.complexity = 'high';
+    else if (result.complexityScore >= 15) result.complexity = 'medium';
+
+    result.complexityScore += tokens.length;
+
+    result.keywords = tokens.filter(t => t.type === 'keyword').map(t => t.text);
+
+    return result;
+  }
+
+  const CLAUSE_CN = {
+    'SELECT': '查询', 'FROM': '从', 'WHERE': '筛选条件', 'GROUP BY': '分组',
+    'HAVING': '分组筛选', 'ORDER BY': '排序', 'INSERT INTO': '插入到',
+    'UPDATE': '更新', 'DELETE FROM': '删除', 'SET': '设置', 'VALUES': '值',
+    'ON': '连接条件', 'USING': '使用', 'WHEN': '当', 'THEN': '则',
+    'ELSE': '否则', 'CASE': '条件判断', 'MERGE': '合并', 'INTO': '到',
+    'PARTITION BY': '分区', 'OVER': '开窗', 'RETURNING': '返回',
+    'FOR': '等待', 'WAIT': '等待', 'NOWAIT': '不等',
+    'START WITH': '起始条件', 'CONNECT BY': '连接条件', 'PRIOR': '上一级',
+    'WITH': '公用表', 'RECURSIVE': '递归', 'UNION': '并集',
+    'UNION ALL': '并集(包含重复)', 'INTERSECT': '交集', 'MINUS': '差集',
+    'CREATE': '创建', 'ALTER': '修改', 'DROP': '删除',
+    'TABLE': '表', 'INDEX': '索引', 'VIEW': '视图', 'SEQUENCE': '序列',
+    'TRIGGER': '触发器', 'PROCEDURE': '存储过程', 'FUNCTION': '函数',
+    'PACKAGE': '包', 'BODY': '包体', 'DECLARE': '声明',
+    'BEGIN': '开始', 'END': '结束', 'LOOP': '循环', 'WHILE': '当',
+    'IF': '如果', 'ELSIF': '或如果', 'RETURN': '返回',
+    'COMMIT': '提交', 'ROLLBACK': '回滚', 'SAVEPOINT': '保存点',
+    'GRANT': '授权', 'REVOKE': '撤销授权', 'TRUNCATE': '截断',
+    'CONSTRAINT': '约束', 'PRIMARY KEY': '主键', 'FOREIGN KEY': '外键',
+    'REFERENCES': '引用', 'DEFAULT': '默认值', 'CHECK': '检查',
+    'ADD': '添加', 'MODIFY': '修改列', 'COLUMN': '列',
+    'ASC': '升序', 'DESC': '降序', 'AND': '且', 'OR': '或',
+    'NOT': '非', 'IN': '在', 'LIKE': '匹配', 'BETWEEN': '介于',
+    'EXISTS': '存在', 'ANY': '任一', 'SOME': '一些', 'ALL': '全部',
+    'IS NULL': '为空', 'IS NOT NULL': '不为空', 'INNER JOIN': '内连接',
+    'LEFT JOIN': '左连接', 'RIGHT JOIN': '右连接', 'FULL JOIN': '全连接',
+    'CROSS JOIN': '交叉连接', 'NATURAL JOIN': '自然连接',
+    'LEFT OUTER JOIN': '左外连接', 'RIGHT OUTER JOIN': '右外连接',
+    'FULL OUTER JOIN': '全外连接'
+  };
+
+  const FUNC_CN = {
+    'NVL': '空值替换', 'NVL2': '条件空值替换', 'COALESCE': '首个非空值',
+    'DECODE': '条件解码', 'CASE': '条件表达式',
+    'UPPER': '转大写', 'LOWER': '转小写', 'INITCAP': '首字母大写',
+    'LENGTH': '字符串长度', 'SUBSTR': '截取子串', 'INSTR': '查找位置',
+    'CONCAT': '拼接字符串', 'REPLACE': '替换字符串', 'TRIM': '去除空格',
+    'LTRIM': '去除左空格', 'RTRIM': '去除右空格', 'LPAD': '左填充',
+    'RPAD': '右填充', 'ASCII': 'ASCII码', 'CHR': '字符',
+    'TRANSLATE': '字符翻译', 'REGEXP_LIKE': '正则匹配',
+    'REGEXP_REPLACE': '正则替换', 'REGEXP_SUBSTR': '正则截取',
+    'ROUND': '四舍五入', 'TRUNC': '截断', 'CEIL': '向上取整',
+    'FLOOR': '向下取整', 'MOD': '取模', 'ABS': '绝对值',
+    'SQRT': '平方根', 'POWER': '幂', 'LOG': '对数',
+    'TO_CHAR': '转字符', 'TO_DATE': '转日期', 'TO_NUMBER': '转数字',
+    'TO_TIMESTAMP': '转时间戳', 'CAST': '类型转换',
+    'SYSDATE': '系统日期', 'SYSTIMESTAMP': '系统时间戳',
+    'ADD_MONTHS': '加月份', 'MONTHS_BETWEEN': '月份差',
+    'NEXT_DAY': '下一天', 'LAST_DAY': '月末',
+    'TRUNC(date)': '截断日期', 'ROUND(date)': '四舍五入日期',
+    'EXTRACT': '提取日期部分', 'NEW_TIME': '时区转换',
+    'COUNT': '计数', 'SUM': '求和', 'AVG': '平均',
+    'MAX': '最大', 'MIN': '最小', 'STDDEV': '标准差',
+    'VARIANCE': '方差', 'LISTAGG': '列表聚合',
+    'RANK': '排名', 'DENSE_RANK': '密集排名', 'ROW_NUMBER': '行号',
+    'LEAD': '后一行', 'LAG': '前一行',
+    'FIRST_VALUE': '首个值', 'LAST_VALUE': '末个值',
+    'NTH_VALUE': '第N个值', 'NTILE': '分桶',
+    'PERCENT_RANK': '百分排名', 'CUME_DIST': '累积分布',
+    'RATIO_TO_REPORT': '比例报告',
+    'USER': '当前用户', 'SYS_CONTEXT': '系统上下文',
+    'ROWID': '行标识', 'ROWNUM': '行号', 'LEVEL': '层级',
+    'DBMS_OUTPUT': '输出包', 'DBMS_RANDOM': '随机包',
+    'DBMS_CRYPTO': '加密包', 'UTL_FILE': '文件包'
+  };
+
+  const FUNC_DESC = {
+    'NVL': '如果第一个参数为空则返回第二个参数',
+    'NVL2': '如果第一个参数非空返回第二个，否则返回第三个',
+    'COALESCE': '返回参数列表中第一个非空的值',
+    'INSTR': '在字符串中查找子串的位置，>0表示包含',
+    'INSTRB': '按字节查找子串位置',
+    'SUBSTR': '从指定位置截取指定长度的子串',
+    'SUBSTRB': '按字节截取子串',
+    'REPLACE': '将字符串中的指定子串替换为新内容',
+    'REGEXP_LIKE': '使用正则表达式匹配字符串',
+    'REGEXP_REPLACE': '使用正则表达式替换匹配内容',
+    'REGEXP_SUBSTR': '使用正则表达式截取匹配内容',
+    'UPPER': '将字符串转为大写',
+    'LOWER': '将字符串转为小写',
+    'INITCAP': '将每个单词首字母转为大写',
+    'LENGTH': '返回字符串长度',
+    'TRIM': '去除字符串首尾空格',
+    'LTRIM': '去除字符串左侧空格',
+    'RTRIM': '去除字符串右侧空格',
+    'LPAD': '在字符串左侧填充指定字符到指定长度',
+    'RPAD': '在字符串右侧填充指定字符到指定长度',
+    'ROUND': '对数值进行四舍五入',
+    'TRUNC': '对数值进行截断',
+    'CEIL': '向上取整',
+    'FLOOR': '向下取整',
+    'MOD': '取模运算',
+    'ABS': '取绝对值',
+    'TO_CHAR': '将数值或日期转为字符串',
+    'TO_DATE': '将字符串转为日期',
+    'TO_NUMBER': '将字符串转为数值',
+    'CAST': '强制类型转换',
+    'COUNT': '统计行数或非空值数量',
+    'SUM': '对数值求和',
+    'AVG': '计算平均值',
+    'MAX': '取最大值',
+    'MIN': '取最小值',
+    'LISTAGG': '将多行值拼接成一个字符串',
+    'RANK': '排名函数（有并列）',
+    'DENSE_RANK': '密集排名（无并列空缺）',
+    'ROW_NUMBER': '为每行分配序号',
+    'OVER': '窗口函数的标志',
+    'PARTITION': '分区',
+    'SYSDATE': '当前系统日期和时间',
+    'SYSTIMESTAMP': '当前系统时间戳',
+    'ADD_MONTHS': '在日期上加月份',
+    'MONTHS_BETWEEN': '计算两个日期的月份差',
+    'NEXT_DAY': '返回指定日期的下一个星期',
+    'LAST_DAY': '返回指定日期所在月的最后一天'
+  };
+
+  const OP_CN = {
+    '=': '等于', '!=': '不等于', '<>': '不等于',
+    '>': '大于', '<': '小于', '>=': '大于等于', '<=': '小于等于',
+    'LIKE': '匹配', 'NOT LIKE': '不匹配',
+    'IN': '属于', 'NOT IN': '不属于',
+    'BETWEEN': '介于', 'IS NULL': '是空的', 'IS NOT NULL': '不是空的',
+    'EXISTS': '存在', 'NOT EXISTS': '不存在',
+    '>=': '大于或等于'
+  };
+
+  function describeSearchStr(s) {
+    if (s.length === 1) {
+      if (/[A-Z]/.test(s)) return `大写字母 ${s}`;
+      if (/[a-z]/.test(s)) return `小写字母 ${s}`;
+      return `字符 ${s}`;
+    }
+    return `"${s}"`;
+  }
+
+  function translateCondition(expr, fieldName, _betweenStore) {
+    if (!expr) return '';
+    let e = expr.trim();
+
+    if (!_betweenStore) _betweenStore = [];
+
+    e = e.replace(/(\w+)\s+BETWEEN\s+(\S+)\s+AND\s+(\S+)/gi, function(match, col, low, high) {
+      const idx = _betweenStore.length;
+      _betweenStore.push({col: col, low: low, high: high});
+      return `__BW${idx}__`;
+    });
+
+    const orParts = splitByKeyword(e, '\\bOR\\b');
+    if (orParts.length > 1) {
+      return orParts.map(p => translateCondition(p.trim(), fieldName, _betweenStore)).join('，或者');
+    }
+
+    const andParts = splitByKeyword(e, '\\bAND\\b');
+    if (andParts.length > 1) {
+      return andParts.map(p => translateCondition(p.trim(), fieldName, _betweenStore)).join('，并且');
+    }
+
+    const bwMatch = e.match(/__BW(\d+)__/);
+    if (bwMatch) {
+      const idx = parseInt(bwMatch[1]);
+      const b = _betweenStore[idx];
+      if (b) return `字段 ${b.col.toUpperCase()} 介于 ${b.low} 和 ${b.high} 之间`;
+    }
+
+    const instrMatch = e.match(/INSTR\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*,\s*'([^']*)'\s*\)\s*([<>]=?|!=)\s*(\d+)/i);
+    if (instrMatch) {
+      const col = instrMatch[1].toUpperCase();
+      const search = instrMatch[2];
+      const op = instrMatch[3];
+      const val = parseInt(instrMatch[4]);
+      const contains = op === '>' && val === 0;
+      const desc = describeSearchStr(search);
+      return contains
+        ? `字段 ${col} 里面包含${desc}`
+        : `字段 ${col} 里面不包含${desc}`;
+    }
+
+    const instrAnyMatch = e.match(/INSTR\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*,\s*'([^']*)'\s*\)/i);
+    if (instrAnyMatch) {
+      const col = instrAnyMatch[1].toUpperCase();
+      const desc = describeSearchStr(instrAnyMatch[2]);
+      return `字段 ${col} 中查找${desc}的位置`;
+    }
+
+    const likeMatch = e.match(/([A-Za-z_][A-Za-z0-9_]*)\s+LIKE\s+'%([^%]*?)%'/i);
+    if (likeMatch) {
+      return `字段 ${likeMatch[1].toUpperCase()} 里面包含"${likeMatch[2]}"`;
+    }
+
+    const likeStartMatch = e.match(/([A-Za-z_][A-Za-z0-9_]*)\s+LIKE\s+'([^%]*)%'/i);
+    if (likeStartMatch && !likeStartMatch[2].includes('%')) {
+      return `字段 ${likeStartMatch[1].toUpperCase()} 以"${likeStartMatch[2]}"开头`;
+    }
+
+    const likeEndMatch = e.match(/([A-Za-z_][A-Za-z0-9_]*)\s+LIKE\s+'%([^%]*)'/i);
+    if (likeEndMatch && !likeEndMatch[2].includes('%')) {
+      return `字段 ${likeEndMatch[1].toUpperCase()} 以"${likeEndMatch[2]}"结尾`;
+    }
+
+    const regexLikeMatch = e.match(/REGEXP_LIKE\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*,\s*'([^']*)'\s*\)/i);
+    if (regexLikeMatch) {
+      return `字段 ${regexLikeMatch[1].toUpperCase()} 匹配正则表达式"${regexLikeMatch[2]}"`;
+    }
+
+    const inMatch = e.match(/([A-Za-z_][A-Za-z0-9_]*)\s+IN\s*\(([^)]+)\)/i);
+    if (inMatch) {
+      return `字段 ${inMatch[1].toUpperCase()} 属于 (${inMatch[2].trim()})`;
+    }
+
+    const notInMatch = e.match(/([A-Za-z_][A-Za-z0-9_]*)\s+NOT\s+IN\s*\(([^)]+)\)/i);
+    if (notInMatch) {
+      return `字段 ${notInMatch[1].toUpperCase()} 不属于 (${notInMatch[2].trim()})`;
+    }
+
+    const isNullMatch = e.match(/([A-Za-z_][A-Za-z0-9_]*)\s+IS\s+NULL/i);
+    if (isNullMatch) {
+      return `字段 ${isNullMatch[1].toUpperCase()} 是空的`;
+    }
+
+    const isNotNullMatch = e.match(/([A-Za-z_][A-Za-z0-9_]*)\s+IS\s+NOT\s+NULL/i);
+    if (isNotNullMatch) {
+      return `字段 ${isNotNullMatch[1].toUpperCase()} 不是空的`;
+    }
+
+    const compareMatch = e.match(/([A-Za-z_][A-Za-z0-9_]*)\s*([=!<>]+)\s*(.+)/i);
+    if (compareMatch) {
+      const col = compareMatch[1].toUpperCase();
+      const op = compareMatch[2];
+      const val = compareMatch[3].trim().replace(/^'|'$/g, '');
+      const opCN = OP_CN[op] || op;
+      return `字段 ${col} ${opCN} ${val}`;
+    }
+
+    const funcMatch = e.match(/^([A-Z_]+)\s*\(/i);
+    if (funcMatch) {
+      const fn = funcMatch[1];
+      const desc = FUNC_DESC[fn];
+      if (desc) {
+        return `${fn}()：${desc}`;
+      }
+    }
+
+    if (fieldName) {
+      const colMatch = e.match(/^([a-zA-Z_][a-zA-Z0-9_]*)(\.[a-zA-Z_][a-zA-Z0-9_]*)?\s*$/i);
+      if (colMatch) return `字段 ${colMatch[1].toUpperCase()}${colMatch[2]||''}`;
+    }
+
+    e = e.replace(/\bIS\s+NOT\s+NULL\b/gi, '不是空的');
+    e = e.replace(/\bIS\s+NULL\b/gi, '是空的');
+    e = e.replace(/\bNOT\s+IN\b/gi, '不属于');
+    e = e.replace(/\bNOT\s+LIKE\b/gi, '不匹配');
+    e = e.replace(/\bNOT\s+EXISTS\b/gi, '不存在');
+    e = e.replace(/\bEXISTS\b/gi, '存在');
+    e = e.replace(/\bBETWEEN\b/gi, '介于');
+    e = e.replace(/\bLIKE\b/gi, '匹配');
+    e = e.replace(/\bIN\s*\(/gi, '属于 (');
+    e = e.replace(/\bIN\b/gi, '属于');
+    e = e.replace(/\bAND\b/gi, '并且');
+    e = e.replace(/\bOR\b/gi, '或者');
+    e = e.replace(/\bNOT\b/gi, '不是');
+    e = e.replace(/!=/g, '不等于');
+    e = e.replace(/<>/g, '不等于');
+    e = e.replace(/>=/g, '大于或等于');
+    e = e.replace(/<=/g, '小于或等于');
+    e = e.replace(/=/g, '等于');
+    e = e.replace(/>/g, '大于');
+    e = e.replace(/</g, '小于');
+
+    return e;
+  }
+
+  function splitByKeyword(str, keywordPattern) {
+    const regex = new RegExp(`(${keywordPattern})`, 'gi');
+    const parts = str.split(regex);
+    const result = [];
+    for (let i = 0; i < parts.length; i++) {
+      if (parts[i] && parts[i].trim()) {
+        if (/^(AND|OR)$/i.test(parts[i].trim())) {
+          result.push(parts[i].trim().toUpperCase());
+        } else {
+          result.push(parts[i]);
+        }
+      }
+    }
+    if (result.length >= 3) {
+      const combined = [];
+      combined.push(result[0]);
+      for (let i = 1; i < result.length; i += 2) {
+        const kw = result[i];
+        const val = result[i + 1] || '';
+        combined.push(kw + ' ' + val);
+      }
+      return combined;
+    }
+    return [str];
+  }
+
+  function translateSQL(sql, analysis) {
+    if (!sql || !sql.trim()) return null;
+
+    const sentences = [];
+    const notes = [];
+    const rawSql = sql.trim();
+    const upper = rawSql.toUpperCase();
+    const construct = analysis.constructs;
+
+    let narrative = '';
+
+    const whenMatch = rawSql.match(/WHEN\s+(.+?)\s+THEN\s+(.+?)(?=\s+WHEN\s|\s+ELSE\s|END|$)/is);
+    const caseMatch = rawSql.match(/CASE\s+WHEN\s+(.+?)\s+THEN\s+(.+?)(?=\s+WHEN\s|\s+ELSE\s|END|$)/is);
+    const elseMatch = rawSql.match(/ELSE\s+(.+?)\s+END\s*/is);
+
+    if (whenMatch) {
+      const condRaw = whenMatch[1].trim();
+      const resultRaw = whenMatch[2].trim();
+
+      const condTrans = translateCondition(condRaw);
+      const resultTrans = resultRaw.replace(/^'|'$/g, '');
+
+      narrative += `如果<span class="tl-clause">${condTrans}</span>，那么这条记录就取值 <span class="tl-func">${resultTrans}</span>`;
+
+      const whenMatches = [...rawSql.matchAll(/WHEN\s+(.+?)\s+THEN\s+(.+?)(?=\s+WHEN\s|\s+ELSE\s|END|$)/gis)];
+      if (whenMatches.length > 1) {
+        const extras = whenMatches.slice(1).map(m => {
+          const c = translateCondition(m[1].trim());
+          const r = m[2].trim().replace(/^'|'$/g, '');
+          return `；如果<span class="tl-clause">${c}</span>，那么这条记录就取值 <span class="tl-func">${r}</span>`;
+        }).join('');
+        narrative += extras;
+      }
+
+      if (elseMatch) {
+        const elseVal = elseMatch[1].trim().replace(/^'|'$/g, '');
+        narrative += `；其他情况，这条记录就取值 <span class="tl-func">${elseVal}</span>`;
+      }
+
+      narrative += '。';
+      sentences.push(narrative);
+    }
+
+    if (analysis.statementType === 'SELECT' || analysis.statementType === 'SELECT (CTE)') {
+      if (!whenMatch) {
+        const parts = [];
+        const fromMatch = rawSql.match(/FROM\s+([\w.]+)/i);
+        const whereMatch = rawSql.match(/WHERE\s+(.+?)(?=\s+GROUP\s+BY|\s+HAVING|\s+ORDER\s+BY|\s+CONNECT|$)/is);
+        const groupMatch = rawSql.match(/GROUP\s+BY\s+(.+?)(?=\s+HAVING|\s+ORDER\s+BY|\s+CONNECT|$)/is);
+        const havingMatch = rawSql.match(/HAVING\s+(.+?)(?=\s+ORDER\s+BY|\s+CONNECT|$)/is);
+        const orderMatch = rawSql.match(/ORDER\s+BY\s+(.+?)$/is);
+        const colsMatch = rawSql.match(/SELECT\s+(DISTINCT\s+)?(.+?)\s+FROM\s/i);
+
+        const tableName = fromMatch ? fromMatch[1].toUpperCase() : '相关表';
+        parts.push(`从 <span class="tl-clause">${tableName}</span> 表查询数据`);
+
+        if (colsMatch && colsMatch[2]) {
+          let cols = colsMatch[2].trim();
+          if (cols.length > 60) cols = cols.slice(0, 60) + '...';
+          if (construct.hasWindowFunc) {
+            parts.push(`涉及 <span class="tl-func">窗口函数</span> 计算`);
+          }
+          if (construct.hasCase) {
+            parts.push(`使用 <span class="tl-func">CASE WHEN</span> 条件判断`);
+          }
+        }
+
+        if (whereMatch) {
+          const whereCond = translateCondition(whereMatch[1].trim());
+          parts.push(`筛选条件：<span class="tl-clause">${whereCond}</span>`);
+        }
+
+        if (construct.hasJoin) {
+          parts.push(`通过 <span class="tl-clause">${construct.joinType}</span> 连接`);
+        }
+
+        if (groupMatch) {
+          parts.push(`按 <span class="tl-clause">${groupMatch[1].trim()}</span> 分组`);
+        }
+
+        if (havingMatch) {
+          const havingCond = translateCondition(havingMatch[1].trim());
+          parts.push(`分组筛选：<span class="tl-clause">${havingCond}</span>`);
+        }
+
+        if (orderMatch) {
+          parts.push(`按 <span class="tl-clause">${orderMatch[1].trim()}</span> 排序`);
+        }
+
+        if (parts.length > 0) {
+          sentences.push(parts.join('，') + '。');
+        }
+      }
+    } else if (analysis.statementType === 'INSERT') {
+      const intoMatch = rawSql.match(/INTO\s+([\w.]+)/i);
+      if (intoMatch) {
+        sentences.push(`<span class="tl-clause">向</span> <span class="tl-func">${intoMatch[1].toUpperCase()}</span> 表插入一行新数据。`);
+      }
+    } else if (analysis.statementType === 'UPDATE') {
+      const tableMatch = rawSql.match(/UPDATE\s+([\w.]+)/i);
+      const whereMatch = rawSql.match(/WHERE\s+(.+?)$/is);
+      if (tableMatch) {
+        let s = `更新 <span class="tl-func">${tableMatch[1].toUpperCase()}</span> 表中的数据`;
+        if (whereMatch) {
+          const cond = translateCondition(whereMatch[1].trim());
+          s += `，条件：<span class="tl-clause">${cond}</span>`;
+        }
+        s += '。';
+        sentences.push(s);
+      }
+    } else if (analysis.statementType === 'DELETE') {
+      const tableMatch = rawSql.match(/FROM\s+([\w.]+)/i) || rawSql.match(/DELETE\s+FROM\s+([\w.]+)/i);
+      const whereMatch = rawSql.match(/WHERE\s+(.+?)$/is);
+      if (tableMatch) {
+        let s = `从 <span class="tl-func">${tableMatch[1].toUpperCase()}</span> 表删除数据`;
+        if (whereMatch) {
+          const cond = translateCondition(whereMatch[1].trim());
+          s += `，条件：<span class="tl-clause">${cond}</span>`;
+        }
+        s += '。';
+        sentences.push(s);
+      }
+    } else if (analysis.statementType === 'MERGE') {
+      sentences.push(`<span class="tl-clause">合并</span>操作：匹配到时更新，未匹配到时插入。`);
+    } else if (['CREATE','ALTER','DROP','TRUNCATE'].includes(analysis.statementType)) {
+      const objMatch = upper.match(/(CREATE|ALTER|DROP|TRUNCATE)\s+(TABLE|INDEX|VIEW|SEQUENCE|TRIGGER|PROCEDURE|FUNCTION|PACKAGE)/i);
+      if (objMatch) {
+        const objCN = CLAUSE_CN[objMatch[2]] || objMatch[2];
+        sentences.push(`<span class="tl-clause">${analysis.statementType}</span> 一个 ${objCN} 对象。`);
+      }
+    } else if (analysis.statementType === 'PL/SQL') {
+      sentences.push(`这是一段 <span class="tl-clause">PL/SQL</span> 过程化代码块，包含变量声明、查询和输出。`);
+    }
+
+    analysis.functions.slice(0, 8).forEach(f => {
+      const cn = FUNC_CN[f.name.toUpperCase()];
+      const desc = FUNC_DESC[f.name.toUpperCase()];
+      if (cn && desc) {
+        notes.push(`<span class="tl-func">${f.name}</span>(${cn})：${desc}`);
+      } else if (cn) {
+        notes.push(`<span class="tl-func">${f.name}</span>(${cn})`);
+      }
+    });
+
+    if (construct.hasWindowFunc) {
+      notes.push('窗口函数：函数名() OVER (PARTITION BY 分区 ORDER BY 排序)，用于分组内排名和汇总');
+    }
+    if (construct.hasCTE) {
+      notes.push('CTE 公用表表达式：WITH 名称 AS (查询)，可多次引用，支持递归');
+    }
+    if (construct.hasMerge) {
+      notes.push('MERGE 语法：MERGE INTO 目标 USING 源 ON 条件 WHEN MATCHED THEN UPDATE WHEN NOT MATCHED THEN INSERT');
+    }
+    if (construct.hasUnion) {
+      notes.push('集合运算：UNION 合并结果并去重，UNION ALL 不去重');
+    }
+    if (construct.hasCase && !whenMatch) {
+      notes.push('CASE WHEN 语法：CASE WHEN 条件 THEN 值 ELSE 值 END，用于条件判断');
+    }
+
+    if (sentences.length === 0) {
+      sentences.push(`这是一段 <span class="tl-clause">${analysis.statementType}</span> 类型的 SQL 语句。`);
+    }
+
+    return { sentences, notes };
+  }
+
+  function renderAnalyzerResult(result) {
+    const box = $('#analyzerResult');
+    box.classList.add('show');
+
+    if (!result) {
+      box.innerHTML = '<div class="no-result" style="grid-column:1/-1"><i class="fas fa-exclamation-circle"></i>请输入 SQL 代码后再分析</div>';
+      return;
+    }
+
+    const cLabel = result.complexity === 'high' ? '高复杂度' : result.complexity === 'medium' ? '中复杂度' : '低复杂度';
+    const cClass = result.complexity;
+    const cIcon = result.complexity === 'high' ? 'fa-fire' : result.complexity === 'medium' ? 'fa-triangle-exclamation' : 'fa-circle-check';
+
+    const stmtHtml = `
+      <div class="ar-section">
+        <h4><i class="fas fa-file-alt"></i> 语句类型</h4>
+        <div class="ar-statement">
+          <div class="stmt-type">${result.statementType}</div>
+          <div class="stmt-desc">${result.statementDesc}</div>
+          <span class="stmt-complexity ${cClass}"><i class="fas ${cIcon}"></i> ${cLabel}</span>
+        </div>
+      </div>`;
+
+    const funcHtml = result.functions.length > 0 ? `
+      <div class="ar-section">
+        <h4><i class="fas fa-function"></i> 识别到的 Oracle 函数 <span style="font-weight:400;color:#8a93a3;font-size:.78rem">(${result.functions.length}个)</span></h4>
+        <div class="ar-functions">
+          ${result.functions.map(f => `
+            <div class="ar-func-item">
+              <span><span class="func-name">${f.name}</span> <span class="func-cat">· ${f.category}</span></span>
+              <a class="func-jump" data-func="${f.name}"><i class="fas fa-arrow-right"></i> 查看文档</a>
+            </div>
+          `).join('')}
+        </div>
+      </div>` : '';
+
+    const constructs = result.constructs;
+    const structureItems = [];
+    if (constructs.hasJoin) structureItems.push({label: constructs.joinType + ' 连接', highlighted: true});
+    if (constructs.hasSubquery) structureItems.push({label: '子查询 × ' + constructs.subqueryCount, highlighted: constructs.subqueryCount > 1});
+    if (constructs.hasGroupBy) structureItems.push({label: 'GROUP BY 分组', highlighted: true});
+    if (constructs.hasHaving) structureItems.push({label: 'HAVING 过滤', highlighted: true});
+    if (constructs.hasOrderBy) structureItems.push({label: 'ORDER BY 排序', highlighted: false});
+    if (constructs.hasUnion) structureItems.push({label: '集合运算 (UNION)', highlighted: true});
+    if (constructs.hasCase) structureItems.push({label: 'CASE WHEN 条件表达式', highlighted: false});
+    if (constructs.hasWindowFunc) structureItems.push({label: '窗口函数 (OVER)', highlighted: true});
+    if (constructs.hasCTE) structureItems.push({label: 'CTE 公用表表达式', highlighted: true});
+    if (constructs.hasMerge) structureItems.push({label: 'MERGE 合并语句', highlighted: true});
+    if (constructs.hasPLSQL) structureItems.push({label: 'PL/SQL 过程化逻辑', highlighted: true});
+    if (result.tables.length > 0) structureItems.push({label: '涉及表: ' + result.tables.join(', '), highlighted: false});
+
+    const structHtml = structureItems.length > 0 ? `
+      <div class="ar-section">
+        <h4><i class="fas fa-sitemap"></i> 语法结构识别</h4>
+        <div class="ar-structure">
+          ${structureItems.map(s => `<div class="ar-struct-item ${s.highlighted ? 'highlighted' : ''}"><span class="dot"></span>${s.label}</div>`).join('')}
+        </div>
+      </div>` : '';
+
+    const tokenHtml = `
+      <div class="ar-section">
+        <h4><i class="fas fa-tags"></i> 词法分析 <span style="font-weight:400;color:#8a93a3;font-size:.78rem">(${result.tokens.length}个 token)</span></h4>
+        <div class="ar-tokens">
+          ${result.tokens.map(t => {
+            const cls = {keyword:'tk-keyword', function:'tk-function', operator:'tk-operator', clause:'tk-clause', join:'tk-join', object:'tk-object', literal:'tk-literal', identifier:'tk-object', number:'tk-literal', punctuation:'', unknown:''}[t.type] || '';
+            return `<span class="ar-token ${cls}" title="${t.type}">${t.raw}</span>`;
+          }).join('')}
+        </div>
+      </div>`;
+
+    const warningHtml = result.warnings.length > 0 ? `
+      <div class="ar-section">
+        <h4><i class="fas fa-triangle-exclamation"></i> 优化建议 <span style="font-weight:400;color:#8a93a3;font-size:.78rem">(${result.warnings.length}条)</span></h4>
+        <div class="ar-warnings">
+          ${result.warnings.map(w => `
+            <div class="ar-warning ${w.type}">
+              <i class="fas ${w.type === 'error' ? 'fa-circle-xmark' : w.type === 'warn' ? 'fa-triangle-exclamation' : 'fa-circle-info'}"></i>
+              <span>${w.msg}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>` : '';
+
+    const summaryItems = [];
+    summaryItems.push(`<strong>复杂度评估：</strong>${cLabel}（基于语句类型、连接数、子查询数、窗口函数数等综合计算）`);
+    if (result.tables.length > 0) summaryItems.push(`<strong>涉及表：</strong>${result.tables.join(', ')}`);
+    if (result.functions.length > 0) summaryItems.push(`<strong>使用函数：</strong>${result.functions.map(f=>f.name).join(', ')}`);
+    if (result.keywords.length > 0) summaryItems.push(`<strong>关键语法：</strong>${[...new Set(result.keywords)].slice(0,15).join(' → ')}`);
+
+    const summaryHtml = `
+      <div class="ar-section">
+        <h4><i class="fas fa-lightbulb"></i> 分析摘要</h4>
+        <div class="ar-summary">
+          ${summaryItems.map(s => `<div>${s}</div>`).join('')}
+        </div>
+      </div>`;
+
+    const trans = translateSQL(result.sql, result);
+    const translateHtml = trans ? `
+      <div class="ar-section">
+        <div class="ar-translate">
+          <div class="ar-translate-head">
+            <i class="fas fa-language"></i> 中文翻译解读
+            <button class="ar-translate-toggle" onclick="this.closest('.ar-translate').querySelector('.ar-translate-body').style.display=this.closest('.ar-translate').querySelector('.ar-translate-body').style.display==='none'?'block':'none';this.innerHTML=this.innerHTML.includes('展开')?'收起 ▲':'展开 ▼'">收起 ▲</button>
+          </div>
+          <div class="ar-translate-body">
+            ${trans.sentences.map(s => `<div class="tl-sentence">${s}</div>`).join('')}
+            ${trans.notes.length > 0 ? trans.notes.map(n => `<div class="tl-note">${n}</div>`).join('') : ''}
+          </div>
+        </div>
+      </div>` : '';
+
+    box.innerHTML = stmtHtml + funcHtml + structHtml + tokenHtml + warningHtml + translateHtml + summaryHtml;
+
+    box.querySelectorAll('.func-jump').forEach(link => {
+      link.addEventListener('click', () => {
+        const fname = link.dataset.func;
+        fsInput.value = fname;
+        kw = fname;
+        fsWrap.classList.add('has-text');
+        const fnHit = allFuncs.find(f => f.name.toUpperCase() === fname.toUpperCase());
+        if (fnHit) {
+          activeCat = fnHit.category;
+          catsWrap.querySelectorAll('.cat-btn').forEach(x => x.classList.toggle('active', x.dataset.cat === activeCat));
+        }
+        renderFunc(true);
+        document.getElementById('analyzerModal').classList.remove('open');
+        document.getElementById('sec-functions').scrollIntoView({behavior: 'smooth', block: 'start'});
+        setTimeout(() => {
+          const cards = document.querySelectorAll('.func-card');
+          cards.forEach(c => {
+            if (c.querySelector('.fname')?.textContent.toUpperCase().includes(fname.toUpperCase())) {
+              c.style.transition = 'box-shadow .4s';
+              c.style.boxShadow = '0 0 0 3px rgba(199,70,52,.5)';
+              setTimeout(() => { c.style.boxShadow = ''; }, 1800);
+            }
+          });
+        }, 400);
+      });
+    });
+  }
+
+  const fab = $('#analyzerFab');
+  const modal = $('#analyzerModal');
+  const closeBtn = $('#analyzerClose');
+  const runBtn = $('#analyzerRun');
+  const input = $('#analyzerInput');
+  const result = $('#analyzerResult');
+
+  fab.addEventListener('click', () => {
+    modal.classList.add('open');
+    input.focus();
+  });
+
+  closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) modal.classList.remove('open');
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && modal.classList.contains('open')) {
+      e.preventDefault();
+      runBtn.click();
+    }
+  });
+
+  runBtn.addEventListener('click', () => {
+    const sql = input.value.trim();
+    if (!sql) return;
+    runBtn.disabled = true;
+    runBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 分析中...';
+    setTimeout(() => {
+      const res = analyzeSQL(sql);
+      renderAnalyzerResult(res);
+      runBtn.disabled = false;
+      runBtn.innerHTML = '<i class="fas fa-play"></i> 分析';
+    }, 100);
+  });
+
+  input.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runBtn.click();
+    }
+  });
+
+  document.querySelectorAll('.sample-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.sample;
+      if (SAMPLES[key]) {
+        input.value = SAMPLES[key];
+        runBtn.click();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
