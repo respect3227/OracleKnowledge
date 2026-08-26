@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: oracle-knowledge
+    runtime: node
+    region: singapore
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    env:
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /api/knowledge/sections
