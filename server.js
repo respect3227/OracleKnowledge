@@ -1,5 +1,5 @@
 /**
- * Express 后端入口
+ * Express 后端入口(sql.js 兼容版)
  *  - 托管前端静态资源 /public
  *  - 暴露 REST API:/api/...
  */
@@ -7,8 +7,8 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { existsSync } from 'node:fs';
-import './src/server/db.js';            // 初始化 schema
-import './src/server/seed.js';           // 首次启动自动 seed
+import { getDb } from './src/server/db.js';
+import { seed } from './src/server/seed.js';
 import knowledgeRoutes from './src/server/routes/knowledge.js';
 import funcRoutes from './src/server/routes/functions.js';
 import translateRoutes from './src/server/routes/translate.js';
@@ -22,7 +22,6 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// 静态资源(express.static 找不到文件会自动调 next,无需 existsSync 守卫)
 const publicDir = join(__dirname, 'public');
 app.use(express.static(publicDir, {
   maxAge: '1h',
@@ -32,7 +31,6 @@ app.use(express.static(publicDir, {
   }
 }));
 
-// API 路由
 app.use('/api/knowledge', knowledgeRoutes);
 app.use('/api/functions', funcRoutes);
 app.use('/api/translate', translateRoutes);
@@ -41,19 +39,34 @@ app.use('/api/history', historyRoutes);
 
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 
-// SPA 回退:仅对无扩展名的路径回退 index.html(避免静态资源 404 被当成 HTML 返回)
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api/')) return next();
   const last = req.path.split('/').pop();
   const hasExt = last.includes('.');
-  if (hasExt) return next();  // 静态资源 404 让其正常 404
+  if (hasExt) return next();
   const idx = join(publicDir, 'index.html');
   if (existsSync(idx)) return res.sendFile(idx);
   res.status(404).send('Not Found');
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  // eslint-disable-next-line no-console
-  console.log(`[Oracle/DM Knowledge] 服务已启动: http://localhost:${PORT}`);
-  console.log(`[Oracle/DM Knowledge] 公网访问: http://115.190.92.241:${PORT}`);
+async function start() {
+  const db = await getDb();
+
+  const force = process.env.SEED_FORCE === '1';
+  const existing = db.prepare('SELECT COUNT(*) AS n FROM sections').get()?.n || 0;
+  if (existing === 0 || force) {
+    const stats = seed(db);
+    console.log('[seed] 种子数据已写入 SQLite:', stats);
+  } else {
+    console.log(`[seed] 数据库已有 ${existing} 个章节,跳过`);
+  }
+
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[Oracle/DM Knowledge] 服务已启动: http://localhost:${PORT}`);
+  });
+}
+
+start().catch(err => {
+  console.error('[start] 启动失败:', err);
+  process.exit(1);
 });

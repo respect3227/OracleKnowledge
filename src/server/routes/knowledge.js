@@ -36,20 +36,23 @@ router.get('/items', (req, res) => {
   res.json(rows);
 });
 
-// 全文搜索
+// 全文搜索(LIKE 实现,兼容 sql.js)
 router.get('/search', (req, res) => {
   const q = String(req.query.q || '').trim();
   if (!q) return res.json([]);
-  // 兼容 q 不含通配;FTS5 默认分词
-  const escaped = q.replace(/"/g, '""');
+  const like = `%${q}%`;
   const rows = db.prepare(`
-    SELECT i.id, i.section_id, i.name, i.syntax, i."desc", i.example, i.tips, i.result, i.tags, i.db, i.diff_note,
-           bm25(items_fts) AS score
-    FROM items_fts JOIN items i ON items_fts.rowid = i.rowid
-    WHERE items_fts MATCH ?
-    ORDER BY score
+    SELECT id, section_id, name, syntax, "desc", example, tips, result, tags, db, diff_note,
+      (CASE WHEN name LIKE ? THEN 3 ELSE 0 END +
+       CASE WHEN syntax LIKE ? THEN 2 ELSE 0 END +
+       CASE WHEN "desc" LIKE ? THEN 1 ELSE 0 END +
+       CASE WHEN example LIKE ? THEN 1 ELSE 0 END +
+       CASE WHEN tags LIKE ? THEN 1 ELSE 0 END) AS score
+    FROM items
+    WHERE name LIKE ? OR syntax LIKE ? OR "desc" LIKE ? OR example LIKE ? OR tags LIKE ?
+    ORDER BY score DESC
     LIMIT 50
-  `).all(escaped);
+  `).all(like, like, like, like, like, like, like, like, like, like);
   res.json(rows);
 });
 
