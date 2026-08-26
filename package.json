@@ -1,0 +1,22 @@
+{
+  "name": "oracle-dm-knowledge",
+  "version": "2.0.0",
+  "description": "Oracle 与达梦数据库双语种速查教程 · 全栈重构版(Node + Express + SQLite + AST 翻译器 + Tailwind/shadcn 设计语言)",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "init-db": "node src/server/seed.js --reset",
+    "test-parser": "node src/server/translator/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "express": "^4.19.2",
+    "node-sql-parser": "^5.3.0",
+    "sql-formatter": "^15.4.2"
+  }
+}
